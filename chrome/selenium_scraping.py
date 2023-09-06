@@ -39,29 +39,45 @@ def get_lessons(file_path):
         soup = BeautifulSoup(scr, 'lxml')
         lessons = soup.find_all('div', class_='media day ng-star-inserted')
 
-        date_and_time = []
+        date = []
+        dotw = []
+        time = []
         subjects = []
-        additional_info = []
+        type_of_subject = []
+        cabinet = []
+        teacher = []
         for lesson in lessons:
-            lesson_time = lesson.find('div', class_='d-lg-none date clearfix').text
-            lesson_time_clean = re.sub(r"\xa0-", '', lesson_time)  # проблема
-            date_and_time.append(lesson_time_clean)
+            date_raw = lesson.find('div', class_='d-lg-none date clearfix').find_next("span")
+            date.append(date_raw.text)
+            dotw_row = lesson.find('div', class_='d-lg-none date clearfix').find_next("span").find_next("span")
+            dotw.append(dotw_row.text)
+            time_raw = lesson.find('div', class_='d-lg-none date clearfix').find_next("span").find_next(
+                "span").find_next("span")
+            time.append(time_raw.text)
 
-            subject = lesson.find('div', class_='title').text
-            subjects.append(subject)
+            subject_raw = lesson.find('div', class_='title').find_next("span")
+            subjects.append(subject_raw.text)
+            type_of_subject_raw = lesson.find("div", "text-muted kind ng-star-inserted")
+            type_of_subject.append(type_of_subject_raw.text)
 
-            add = lesson.find('table', class_='info').text
-            additional_info.append(add)
+            cabinet_raw = lesson.find('table', class_='info').find_next("tr")
+            cabinet.append(cabinet_raw.text)
+            teacher_raw = lesson.find('table', class_='info').find_next("tr").find_next("tr").find_next("tr")
+            teacher.append(teacher_raw.text)
 
-        print(tabulate({"date": date_and_time,
-                        "subjects": subjects,
-                        "info": additional_info}, headers="keys"))
+        print(tabulate({"date": date,
+                        "dotw": dotw,
+                        "time": time,
+                        "subject": subjects,
+                        "type_of_subject": type_of_subject,
+                        "cabinet": cabinet,
+                        "teacher": teacher}, headers="keys"))
+
 
 
 def main():
     # get_source_html('экн211-1','26.09.2023')
     get_lessons(file_path='/Users/work/bot_mmu/bot_mmu/chrome/lessons.html')
-
 
 
 if __name__ == "__main__":
