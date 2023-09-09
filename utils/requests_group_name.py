@@ -8,7 +8,7 @@ import random
 
 chill = 0
 count = 0
-db = sqlite3.connect("/Users/work/bot_mmu/bot_mmu/schedule.db")
+db = sqlite3.connect("/schedule.db")
 
 c = db.cursor()
 
