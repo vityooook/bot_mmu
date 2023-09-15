@@ -1,9 +1,15 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-import pickle
-import time
-group = 'ЭКН211-1'
+import logging
+import asyncio
+from loader import dp, bot
 
-url = 'https://schedule.mi.university/ruz/'
-driver = webdriver.Chrome(executable_path='/Users/work/bot2(schedule mmu)/chrome/chromedriver')
+import handlers
+
+
+async def main():
+    logging.debug("Start bot...")
+    await dp.start_polling(bot)
+
+
+if __name__ == '__main__':
+    # asyncio.run(main())
+    asyncio.get_event_loop().run_until_complete(main())

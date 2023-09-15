@@ -1,9 +1,8 @@
 import requests
 import sqlite3
 import datetime
-date = datetime.
 
-db = sqlite3.connect("/Users/work/bot_mmu/bot_mmu/schedule.db")
+db = sqlite3.connect("/schedule.db")
 c = db.cursor()
 
 info_groups = c.execute("SELECT id, name FROM name_of_groups")
