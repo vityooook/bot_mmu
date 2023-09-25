@@ -5,4 +5,5 @@ load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
 ADMIN = os.getenv("ADMIN")
+DB_PATH = os.path.join("schedule.db")
 
