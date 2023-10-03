@@ -21,8 +21,9 @@ class Calendar:
         ignore_callback = MyCallback(act="IGNORE", year=year, month=month, day=0)
 
         # First row - Month and Year name
-        month_name: str = calendar.LocaleTextCalendar(locale='ru_RU.UTF-8').formatmonthname(year, month, width=0)
-        builder.button(text=f"{month_name}", callback_data=ignore_callback)
+        mouth_name = ["", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь",
+                     "Ноябрь", "Декабрь"]
+        builder.button(text=f"{mouth_name[month]}", callback_data=ignore_callback)
 
         # Second row - Week Days
         for day in ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]:

@@ -2,6 +2,8 @@ import requests
 import sqlite3
 import datetime
 
+from schemas import Lessons
+
 db = sqlite3.connect("/Users/work/bot_mmu/bot_mmu/schedule.db")
 
 
@@ -16,14 +18,14 @@ def schedule_search(group_name, time_data):
     response = requests.get(f"https://mmu2021:mmu2021@schedule.mi.university/api/schedule/group/"
                             f"{group_id}?start={data_start}&finish={data_finish}&lng=1")
 
+    all_lessons = [Lessons(**lesson) for lesson in response.json()]
     text = ''
-    for day in response.json():
-        if day["date"] == time_data:
-            if_change(day=day)
+    for lesson in all_lessons:
+        if lesson.date == time_data:
             text += f"""
-{day['beginLesson']} - {day['endLesson']}
-<b>{day['discipline']}</b>({day['kindOfWork']})
-{day['auditorium']} {day['lecturer']}
+{lesson.beginLesson} - {lesson.endLesson}
+<b>{lesson.discipline}</b>({lesson.kindOfWork})
+{lesson.auditorium} {lesson.lecturer}
 """
     if text == '':
         text = 'пар нету, кайфуем'
@@ -40,8 +42,4 @@ def data_changing(time_data) -> tuple[str, str]:
     return data_monday, data_sunday
 
 
-def if_change(day):
-    if day['kindOfWork'] == 'Лекционные занятия':
-        day['kindOfWork'] = 'ЛЕК'
-    elif day['kindOfWork'] == 'Семинарские занятия':
-        day['kindOfWork'] = 'СЕМ'
+

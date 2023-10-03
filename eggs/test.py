@@ -1,6 +1,3 @@
-a = {
-    'A': 'kfs',
-    'B': 'dlsd'
-}
-a['A'] = 'aaa'
-print(a)
+import datetime
+now = datetime.date.today() + datetime.timedelta(days=1)
+print(now, type(now))

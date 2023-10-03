@@ -1,8 +1,9 @@
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters.command import Command
-from aiogram.fsm.context import FSMContext
 from aiogram.enums.parse_mode import ParseMode
 from keyboards.inline.calendar_my import Calendar, MyCallback
+from contextlib import suppress
+from aiogram.exceptions import TelegramBadRequest
 
 from data import request_schedule
 from loader import dp
@@ -12,7 +13,8 @@ from loader import dp
 
 @dp.message(Command("schedule"))
 async def command_schedule(msg: Message):
-    await msg.answer('выбери', reply_markup=await Calendar().start_calendar())
+    with suppress(TelegramBadRequest):
+        await msg.answer('выбери', reply_markup=await Calendar().start_calendar())
 
 
 @dp.callback_query(MyCallback.filter())

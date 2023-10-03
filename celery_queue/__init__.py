@@ -1,0 +1,1 @@
+from celery_queue import tasks
