@@ -21,7 +21,8 @@ async def command_schedule(msg: Message):
 async def process_calendar(query: CallbackQuery, callback_data: MyCallback):
     selected, date = await Calendar().process_selection(query=query, callback_data=callback_data)
     if selected:
-        time_data = date.strftime('%Y.%m.%d')
-        await query.message.answer(f'ты выбрал {time_data}')
+        time_data = date
+    #     time_data = date.strftime('%Y.%m.%d')
+    #     await query.message.answer(f'ты выбрал {time_data}')
     data = request_schedule.request_schedule(user_id=query.from_user.id, time_data=time_data)
     await query.message.answer(data, parse_mode=ParseMode.HTML)

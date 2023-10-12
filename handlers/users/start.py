@@ -35,7 +35,3 @@ async def process_user_group(msg: Message, state: FSMContext):
     else:
         await msg.answer('такой группы нету')
 
-# @dp.message(Userinfo.user_group)
-# async def process_user_group_fail(msg: Message):
-#     await msg.answer('такой группы нету')
-

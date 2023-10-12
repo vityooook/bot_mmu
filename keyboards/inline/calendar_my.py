@@ -1,5 +1,6 @@
 import calendar
-from datetime import datetime, timedelta
+
+from datetime import datetime, timedelta, date
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.filters.callback_data import CallbackData
 from aiogram.types import CallbackQuery
@@ -53,7 +54,7 @@ class Calendar:
         if callback_data.act == "DAY":
             await query.message.delete_reply_markup()  # removing inline keyboard
             await query.message.delete()
-            return_data = True, datetime(callback_data.year, callback_data.month, callback_data.day)
+            return_data = True, date(callback_data.year, callback_data.month, callback_data.day)
         # user navigates to previous month, editing message with new calendar
         if callback_data.act == "PREV-MONTH":
             prev_date = temp_date - timedelta(days=1)
