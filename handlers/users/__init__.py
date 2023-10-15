@@ -1,1 +1,1 @@
-from handlers.users import start, schedule, test_keyboard
+from handlers.users import start, schedule, test

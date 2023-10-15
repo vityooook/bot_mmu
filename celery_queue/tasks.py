@@ -37,5 +37,5 @@ app_celery.config_from_object('')
 # app_celery.config_from_envvar()
 
 
-if __name__ == '__main__':
-    app_celery.worker_main(["-A", "celery_queue.tasks", "worker", "-B"])
+# if __name__ == '__main__':
+#     app_celery.worker_main(["-A", "celery_queue.tasks", "worker", "-B"])
