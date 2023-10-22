@@ -17,13 +17,13 @@ app_celery = Celery('tasks', broker='redis://127.0.0.1:6379/0', )
 
 @app_celery.task(name='tasks.add')
 def send_schedule_daily():
-    print('i start work')
+    print('celery is working...')
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     massage = request_schedule.request_schedule(user_id=487961820, time_data=tomorrow)
     asyncio.get_event_loop().run_until_complete(
         bot.send_message(chat_id=487961820, text=massage, parse_mode=ParseMode.HTML))
-    print(globals())
-    logging.info(globals())
+    # bot.send_message(chat_id=487961820, text=massage, parse_mode=ParseMode.HTML)
+
 
 
 app_celery.conf.beat_schedule = {
@@ -37,5 +37,5 @@ app_celery.config_from_object('')
 # app_celery.config_from_envvar()
 
 
-# if __name__ == '__main__':
-#     app_celery.worker_main(["-A", "celery_queue.tasks", "worker", "-B"])
+if __name__ == '__main__':
+    app_celery.worker_main(["-A", "celery_queue.tasks", "worker", "-B"])

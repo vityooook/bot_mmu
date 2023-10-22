@@ -1,7 +1,12 @@
-FROM python:3.9-slim-bullseye as production
-
-WORKDIR app
+FROM python:3.10-slim-bullseye as production
 
 COPY . /app
 
-CMD ["python3", "-c", "print('Hello world')"]
+WORKDIR app
+
+RUN pip install -r requirements.txt
+
+ENV TOKEN=placeholder
+
+
+ENTRYPOINT ["python3", "main_tg.py"]

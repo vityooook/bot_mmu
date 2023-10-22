@@ -1,1 +1,1 @@
-broker_connection_retry_on_startup = True
+broker_connection_retry_on_startup=True

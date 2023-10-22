@@ -1,29 +1,31 @@
-from aiogram import F
+from aiogram import Router
 from aiogram.types import Message
-from aiogram.filters.command import Command, CommandStart
+from aiogram.filters.command import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
+from keyboards.reply.menu import main_menu
 from data import db
-from loader import dp
 
+router = Router()
 
 
 class Userinfo(StatesGroup):
     user_group = State()
 
 
-@dp.message(CommandStart())
+@router.message(CommandStart())
 async def cmd_start_handler(msg: Message, state: FSMContext):
+    await msg.delete()
     if db.id_check(msg.from_user.id):
-        await msg.answer(f"Приветик,{msg.from_user.username}, давно не виделись")
+        await msg.answer(f"Приветик,{msg.from_user.username}, давно не виделись", reply_markup=main_menu())
     else:
         await msg.answer('Приветик, это бот от университета МЯУ, который может скинуть расписание!')
         await state.set_state(Userinfo.user_group)
         await msg.answer("Напищи название твоей группы (пример: ЭКН11-1)")
 
 
-@dp.message(Userinfo.user_group)
+@router.message(Userinfo.user_group)
 async def process_user_group(msg: Message, state: FSMContext):
     if db.check_group_by_name(msg.text.upper()):
         await state.update_data(user_group=msg.text.upper())

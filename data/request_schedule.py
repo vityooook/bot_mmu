@@ -9,25 +9,23 @@ cur = db.cursor()
 
 
 def request_schedule(user_id, time_data):
-    # group_id = db.execute(f"SELECT name_of_groups.id FROM name_of_groups INNER JOIN users ON name_of_groups.name = "
-    #                       f"users.user_group WHERE users.user_id='{user_id}'").fetchone()[0]
-    # date_monday_unclean, date_sunday_unclean = data_changing(time_data)
-    # date_monday = datetime.date.strftime(date_monday_unclean, '%Y.%m.%d')
-    # date_sunday = datetime.date.strftime(date_sunday_unclean, '%Y.%m.%d')
-    # response = requests.get(f"https://mmu2021:mmu2021@schedule.mi.university/api/schedule/group/"
-    #                         f"{group_id}?start={date_monday}&finish={date_sunday}&lng=1")
-    # all_lessons = [Lessons(**lesson) for lesson in response.json()]
-    # text = ''
-    #
-    # for lesson in all_lessons:
-    #     if lesson.date == time_data:
-    #         text += str(lesson)
-    # if not text:
-    #     text += 'Пар нет на указанную дату, кайфуем!'
-    # text = f"{datetime.date.strftime(time_data, '%Y.%m.%d')}\n" + text
-    # return text
+    group_id = db.execute(f"SELECT name_of_groups.id FROM name_of_groups INNER JOIN users ON name_of_groups.name = "
+                          f"users.user_group WHERE users.user_id='{user_id}'").fetchone()[0]
+    date_monday_unclean, date_sunday_unclean = data_changing(time_data)
+    date_monday = datetime.date.strftime(date_monday_unclean, '%Y.%m.%d')
+    date_sunday = datetime.date.strftime(date_sunday_unclean, '%Y.%m.%d')
+    response = requests.get(f"https://mmu2021:mmu2021@schedule.mi.university/api/schedule/group/"
+                            f"{group_id}?start={date_monday}&finish={date_sunday}&lng=1")
+    all_lessons = [Lessons(**lesson) for lesson in response.json()]
+    text = ''
 
-    return "Schedule"
+    for lesson in all_lessons:
+        if lesson.date == time_data:
+            text += str(lesson)
+    if not text:
+        text += 'Пар нет на указанную дату, кайфуем!'
+    text = f"{datetime.date.strftime(time_data, '%Y.%m.%d')}\n" + text
+    return text
 
 
 
@@ -38,4 +36,3 @@ def data_changing(time_data):
     return date_monday_unclean, date_sunday_unclean
 
 
-"""SELECT name_of_groups.id FROM name_of_groups INNER JOIN users ON name_of_groups.name = users.user_group WHERE users.user_id = 487961820;"""
