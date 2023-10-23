@@ -3,6 +3,7 @@ from data import config
 
 
 class Database:
+    """в разработке еще не подключил"""
     def __init__(self):
         # self.db_path = "/Users/work/bot_mmu/bot_mmu/schedule.db"
         self.db = sqlite3.connect(config.DB_PATH)

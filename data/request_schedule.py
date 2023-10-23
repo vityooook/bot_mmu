@@ -9,16 +9,19 @@ cur = db.cursor()
 
 
 def request_schedule(user_id, time_data):
+    # get group id for API
     group_id = db.execute(f"SELECT name_of_groups.id FROM name_of_groups INNER JOIN users ON name_of_groups.name = "
                           f"users.user_group WHERE users.user_id='{user_id}'").fetchone()[0]
+    # fins first day and last day of week for API
     date_monday_unclean, date_sunday_unclean = data_changing(time_data)
     date_monday = datetime.date.strftime(date_monday_unclean, '%Y.%m.%d')
     date_sunday = datetime.date.strftime(date_sunday_unclean, '%Y.%m.%d')
+    # requests APi and get json with lessons
     response = requests.get(f"https://mmu2021:mmu2021@schedule.mi.university/api/schedule/group/"
                             f"{group_id}?start={date_monday}&finish={date_sunday}&lng=1")
     all_lessons = [Lessons(**lesson) for lesson in response.json()]
     text = ''
-
+    # process the data and turn into str
     for lesson in all_lessons:
         if lesson.date == time_data:
             text += str(lesson)

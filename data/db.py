@@ -4,7 +4,7 @@ from data import config
 
 db = sqlite3.connect(config.DB_PATH)
 
-
+#
 def id_check(user_id):
     user_id_checking = db.execute('SELECT user_id FROM users WHERE user_id=?', (user_id,)).fetchone()
     return user_id_checking
