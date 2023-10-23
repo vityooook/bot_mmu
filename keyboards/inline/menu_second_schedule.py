@@ -15,15 +15,15 @@ class ScScCallback(CallbackData, prefix='second'):      # поработать �
 
 class MenuSecondSchedule:
 
-    def __init__(self, time: datetime):
+    def __init__(self, time: datetime | None):
         self.time = time
 
     async def start_second_menu(self) -> InlineKeyboardMarkup:
         builder = InlineKeyboardBuilder()
 
         # First row - previous day or next day
-        builder.button(text="U+2B05", callback_data=ScScCallback(act="PREVIOUS"))
-        builder.button(text="U+27A1", callback_data=ScScCallback(act="NEXT"))
+        builder.button(text="⬅️", callback_data=ScScCallback(act="PREVIOUS"))
+        builder.button(text="➡️", callback_data=ScScCallback(act="NEXT"))
 
         # Second row - main menu
         builder.button(text="меню", callback_data=ScScCallback(act="MENU"))
@@ -31,21 +31,19 @@ class MenuSecondSchedule:
         builder.adjust(2, 1)
         return builder.as_markup()
 
-    async def process_second_menu(self, query: CallbackQuery, callback_data: ScScCallback):
-        return_data = False
+    async def process_second_menu(self, query: CallbackQuery, callback_data: ScScCallback) -> tuple:
+        return_data = False, None
 
         if callback_data.act == "PREVIOUS":
             previous = self.time - timedelta(days=1)
-            text = request_schedule(user_id=query.from_user.id, time_data=previous)
-            await query.message.edit_text(text=text)
+            return_data = True, previous
 
         if callback_data.act == "NEXT":
             next = self.time + timedelta(days=1)
-            text = request_schedule(user_id=query.from_user.id, time_data=next)
-            await query.message.edit_text(text=text)
+            return_data = True, next
 
         if callback_data.act == "MENU":
-            return_data = True
+            return_data = False, None
 
         return return_data
 

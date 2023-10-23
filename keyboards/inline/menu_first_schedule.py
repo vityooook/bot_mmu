@@ -38,15 +38,15 @@ class MenuSchedule:
             return_data = True, datetime.today().date()
 
         # user picked a tomorrow button, return schedule for tomorrow
-        if callback_data.act == "TOMORROW":
+        elif callback_data.act == "TOMORROW":
             tomorrow = datetime.today().date() + timedelta(days=1)
             return_data = True, tomorrow
 
         # user picked a calendar button, return schedule for day that user choose
-        if callback_data.act == "CALENDAR":
+        elif callback_data.act == "CALENDAR":
             await query.message.edit_reply_markup(reply_markup=await Calendar().start_calendar())
 
-            selected, date = await Calendar().process_selection() # здесь возникает ошибка (нужно разобрать)
+            selected, date = await Calendar().process_selection(callback_data=None, query=None) # здесь возникает ошибка (нужно разобрать)
             if selected:
                 return_data = True, date
 
