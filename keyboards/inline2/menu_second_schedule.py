@@ -15,8 +15,8 @@ class ScScCallback(CallbackData, prefix='second'):      # поработать �
 
 class MenuSecondSchedule:
 
-    def __init__(self, time: datetime | None):
-        self.time = time
+    # def __init__(self, time: datetime | None):
+    #     self.time = time
 
     async def start_second_menu(self) -> InlineKeyboardMarkup:
         builder = InlineKeyboardBuilder()
@@ -32,11 +32,11 @@ class MenuSecondSchedule:
         builder.adjust(3, 1)
         return builder.as_markup()
 
-    async def process_second_menu(self, query: CallbackQuery, callback_data: ScScCallback) -> tuple:
+    async def process_second_menu(self, query: CallbackQuery, callback_data: ScScCallback, time: datetime) -> tuple:
         return_data = False, None
 
         if callback_data.act == "PREVIOUS":
-            previous = self.time - timedelta(days=1)
+            previous = time - timedelta(days=1)
             return_data = True, previous
 
         elif callback_data.act == "TODAY":
@@ -44,7 +44,7 @@ class MenuSecondSchedule:
             return_data = True, today
 
         elif callback_data.act == "NEXT":
-            next = self.time + timedelta(days=1)
+            next = time + timedelta(days=1)
             return_data = True, next
 
         elif callback_data.act == "MENU":

@@ -6,16 +6,12 @@ from loader import dp, bot
 from services import set_default_commands
 from celery_queue.tasks import app_celery
 
-from handlers import users
+import handlers
 
 
 async def main():
-
-    dp.include_routers(users.test.router,
-                       users.start.router,
-                       users.schedule.router)
-
-
+    dp.include_routers(handlers.users.start.router,
+                       handlers.schedule.schedule.router)
     await set_default_commands(dp)
     await bot.delete_webhook(drop_pending_updates=True)
     # await asyncio.gather(dp.start_polling(bot), setup_taskiq())

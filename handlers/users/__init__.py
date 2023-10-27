@@ -1,1 +1,1 @@
-from handlers.users import start, schedule, test
+from handlers.users import start

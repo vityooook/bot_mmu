@@ -1,1 +1,1 @@
-from keyboards import inline, reply
+from keyboards import inline2, reply
