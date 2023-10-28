@@ -31,27 +31,23 @@ class MenuSchedule:
 
     async def process_selection_menu(self, query: CallbackQuery, callback_data: FrScCallback) -> tuple:
 
-        return_data = (False, None)
+        return_data = (str, None)
 
         # user picked a today button, return schedule for today
         if callback_data.act == "TODAY":
-            return_data = True, datetime.today().date()
+            return_data = "TODAY", datetime.today().date()
 
         # user picked a tomorrow button, return schedule for tomorrow
         elif callback_data.act == "TOMORROW":
             tomorrow = datetime.today().date() + timedelta(days=1)
-            return_data = True, tomorrow
+            return_data = "TOMORROW", tomorrow
 
         # user picked a calendar button, return schedule for day that user choose
         elif callback_data.act == "CALENDAR":
-            await query.message.edit_reply_markup(reply_markup=await Calendar().start_calendar())
-
-            selected, date = await Calendar().process_selection(callback_data=None, query=None) # здесь возникает ошибка (нужно разобрать)
-            if selected:
-                return_data = True, date
+            return_data = "CALENDAR", None
 
         # user picked a MENU button, back to main menu
-        if callback_data.act == 'MENU':
-            return_data = False, None
+        elif callback_data.act == 'MENU':
+            return_data = 'MENU', None
 
         return return_data

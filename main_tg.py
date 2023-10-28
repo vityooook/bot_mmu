@@ -1,6 +1,5 @@
 import logging
 import asyncio
-from aiogram import Bot, Dispatcher
 
 from loader import dp, bot
 from services import set_default_commands
@@ -11,7 +10,7 @@ import handlers
 
 async def main():
     dp.include_routers(handlers.users.start.router,
-                       handlers.schedule.schedule.router)
+                       handlers.users.schedule.router)
     await set_default_commands(dp)
     await bot.delete_webhook(drop_pending_updates=True)
     # await asyncio.gather(dp.start_polling(bot), setup_taskiq())

@@ -3,9 +3,7 @@ from data import config
 
 
 class Database:
-    """в разработке еще не подключил"""
     def __init__(self):
-        # self.db_path = "/Users/work/bot_mmu/bot_mmu/schedule.db"
         self.db = sqlite3.connect(config.DB_PATH)
         self.cur = self.db.cursor()
 
@@ -16,37 +14,24 @@ class Database:
         self.cur.close()
         self.db.close()
 
-    def connect(self):
-        # return sqlite3.connect(self.db_path)
-        return self
+    def get_group_id(self, user_id: int):
+        group_id = self.cur.execute(
+            f"SELECT name_of_groups.id FROM name_of_groups INNER JOIN users ON name_of_groups.name = "
+            f"users.user_group WHERE users.user_id=?", (user_id,)
+        ).fetchone()[0]
+        return group_id
 
-    def id_check(self, user_id):
-        # with self.connect() as conn: # connect to cur
-        with self.db as db:
-            cursor = db.cursor()
-            user_id_checking = cursor.execute('SELECT user_id FROM users WHERE user_id=?', (user_id,)).fetchone()
-            return user_id_checking
+    def id_check(self, user_id: int):
+        user_id_checking = self.cur.execute('SELECT user_id FROM users WHERE user_id=?', (user_id,)).fetchone()
+        return user_id_checking
 
     def add_info_user(self, user_id, user_group):
-        with self.connect() as conn:
-            cursor = conn.cursor()
-            cursor.execute('INSERT INTO users (user_id, user_group) VALUES (?, ?)', (user_id, user_group))
+        self.cur.execute('INSERT INTO users (user_id, user_group) VALUES (?, ?)', (user_id, user_group))
+        self.db.commit()
 
-    def check_group_by_name(self, name) -> bool | None:
-        with self.db as db:
-            cursor = db.cursor()
-            group = cursor.execute("SELECT * FROM name_of_groups WHERE name = ?", (name,)).fetchone()
-            return group
-
-    def select_all_users(self) -> list[tuple]:
-        with self.connect() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM users")
-            return cursor.fetchall()
-
-    def _try_select(self):
-        self.cur.execute("SELECT * FROM users")
-        return self.cur.fetchall()
+    def check_group_by_name(self, name: str) -> bool | None:
+        group = self.cur.execute("SELECT * FROM name_of_groups WHERE name = ?", (name,)).fetchone()
+        return group
 
 
 
@@ -54,11 +39,10 @@ class Database:
 
 
 
-
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # print(Database().check_group_by_name('ЭКН211-1'))
-    with Database() as base:
-        print(base._try_select())
+    # with Database() as base:
+    #     print(base._try_select())
 
 
 

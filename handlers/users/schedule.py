@@ -1,20 +1,14 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
-from aiogram.fsm.state import State, StatesGroup
-from aiogram.fsm.context import FSMContext
 
 from data.request_schedule import request_schedule
-from keyboards.inline2.calendar_my import Calendar, CaCallback
-from keyboards.inline2.menu_first_schedule import MenuSchedule, FrScCallback
-from keyboards.inline2.menu_second_schedule import MenuSecondSchedule, ScScCallback
+from keyboards.inline.calendar_my import Calendar, CaCallback
+from keyboards.inline.menu_first_schedule import MenuSchedule, FrScCallback
+from keyboards.inline.menu_second_schedule import MenuSecondSchedule, ScScCallback
 from keyboards.reply.menu import main_menu
 from loader import bot
 
 router = Router()
-
-
-class DateUser(StatesGroup):
-    date = State()
 
 
 @router.message(F.text == 'расписание')
@@ -28,20 +22,16 @@ async def command_schedule(msg: Message):
 
 
 @router.callback_query(FrScCallback.filter())
-async def process_first_schedule(query: CallbackQuery, callback_data: FrScCallback, state: FSMContext):
+async def process_first_schedule(query: CallbackQuery, callback_data: FrScCallback):
     await query.message.edit_text('загрузка...')
     # catch callback data from menu
     selected, date_for_schedule = await MenuSchedule().process_selection_menu(query=query, callback_data=callback_data)
 
     if selected == "TODAY" or selected == "TOMORROW":
         data = request_schedule(user_id=query.from_user.id, time_data=date_for_schedule)
-        # change current state
-        await state.set_state(DateUser.date)
-        # write new info in user state
-        await state.update_data(date=date_for_schedule)
-        # call second menu with inline keyboard
+
         await query.message.edit_text(data,
-                                      reply_markup=await MenuSecondSchedule().start_second_menu())
+                                      reply_markup=await MenuSecondSchedule().start_second_menu(date=date_for_schedule))
     elif selected == "CALENDAR":
         await query.message.edit_text(text='выбери точную дату', reply_markup=await Calendar().start_calendar())
 
@@ -51,29 +41,25 @@ async def process_first_schedule(query: CallbackQuery, callback_data: FrScCallba
 
 
 @router.callback_query(CaCallback.filter())
-async def process_calendar(query: CallbackQuery, callback_data: CaCallback, state: FSMContext):
+async def process_calendar(query: CallbackQuery, callback_data: CaCallback):
     await query.message.edit_text('загрузка...')
     selected, date_for_schedule = await Calendar().process_selection(query=query, callback_data=callback_data)
+
     if selected:
         data = request_schedule(user_id=query.from_user.id, time_data=date_for_schedule)
-        # change current state
-        await state.set_state(DateUser.date)
-        # write new info in user state
-        await state.update_data(date=date_for_schedule)
-        # call second menu with inline keyboard
         await query.message.edit_text(data,
-                                      reply_markup=await MenuSecondSchedule().start_second_menu())
+                                      reply_markup=await MenuSecondSchedule().start_second_menu(date=date_for_schedule))
 
 
-@router.callback_query(ScScCallback.filter(), DateUser.date)
-async def process_first_schedule(query: CallbackQuery, callback_data: ScScCallback, state: FSMContext):
+@router.callback_query(ScScCallback.filter())
+async def process_first_schedule(query: CallbackQuery, callback_data: ScScCallback):
     await query.message.edit_text('загрузка...')
-    date = await state.get_data()
-    selected, date_for_schedule = await MenuSecondSchedule()\
-        .process_second_menu(query=query,callback_data=callback_data, time=date['date'])
+    selected, date_for_schedule = await MenuSecondSchedule().process_second_menu(query=query,
+                                                                                 callback_data=callback_data)
     if selected:
         data = request_schedule(user_id=query.from_user.id, time_data=date_for_schedule)
-        await query.message.edit_text(data, reply_markup=await MenuSecondSchedule().start_second_menu())
+        await query.message.edit_text(data,
+                                      reply_markup=await MenuSecondSchedule().start_second_menu(date=date_for_schedule))
     else:
         await query.message.delete()
         await query.message.answer('главное меню', reply_markup=main_menu())

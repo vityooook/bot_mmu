@@ -1,1 +1,1 @@
-from handlers import users, errors, schedule
+from handlers import users, errors

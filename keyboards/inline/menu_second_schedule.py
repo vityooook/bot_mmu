@@ -1,30 +1,26 @@
-
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
+import datetime as add
 from typing import Optional
 
-from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup
 from aiogram.filters.callback_data import CallbackData
 from aiogram.types import CallbackQuery
 
-from data.request_schedule import request_schedule
 
-
-class ScScCallback(CallbackData, prefix='second'):      # поработать с названием
+class ScScCallback(CallbackData, prefix='second'):
     act: str
+    date: Optional[add.date] = None
 
 
 class MenuSecondSchedule:
 
-    def __init__(self, time: datetime | None):
-        self.time = time
-
-    async def start_second_menu(self) -> InlineKeyboardMarkup:
+    async def start_second_menu(self, date: add.date) -> InlineKeyboardMarkup:
         builder = InlineKeyboardBuilder()
 
         # First row - previous day or next day
-        builder.button(text="⬅️", callback_data=ScScCallback(act="PREVIOUS"))
+        builder.button(text="⬅️", callback_data=ScScCallback(act="PREVIOUS", date=date))
         builder.button(text='сегодня', callback_data=ScScCallback(act="TODAY"))
-        builder.button(text="➡️", callback_data=ScScCallback(act="NEXT"))
+        builder.button(text="➡️", callback_data=ScScCallback(act="NEXT", date=date))
 
         # Second row - main menu
         builder.button(text="меню", callback_data=ScScCallback(act="MENU"))
@@ -34,17 +30,21 @@ class MenuSecondSchedule:
 
     async def process_second_menu(self, query: CallbackQuery, callback_data: ScScCallback) -> tuple:
         return_data = False, None
+        date = callback_data.date
 
         if callback_data.act == "PREVIOUS":
-            previous = self.time - timedelta(days=1)
+            previous = date - timedelta(days=1)
+            callback_data.date = previous
             return_data = True, previous
 
         elif callback_data.act == "TODAY":
             today = datetime.today().date()
+            callback_data.date = today
             return_data = True, today
 
         elif callback_data.act == "NEXT":
-            next = self.time + timedelta(days=1)
+            next = date + timedelta(days=1)
+            callback_data.date = next
             return_data = True, next
 
         elif callback_data.act == "MENU":

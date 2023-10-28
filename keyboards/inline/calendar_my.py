@@ -12,7 +12,9 @@ class CaCallback(CallbackData, prefix='calendar'):
     month: int
     day: int
 
+
 class Calendar:
+
     async def start_calendar(
             self,
             year: int = datetime.now().year,
@@ -44,7 +46,7 @@ class Calendar:
         builder.adjust(1, 7)
         return builder.as_markup()
 
-    async def process_selection(self, query: CallbackQuery | None, callback_data: CaCallback | None) -> tuple:
+    async def process_selection(self, query: CallbackQuery, callback_data: CaCallback) -> tuple:
         return_data = (False, None)
         temp_date = datetime(year=callback_data.year, month=callback_data.month, day=1)
         # processing empty buttons, answering with no action
