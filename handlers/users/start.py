@@ -17,6 +17,7 @@ class Userinfo(StatesGroup):
 @router.message(CommandStart())
 async def cmd_start_handler(msg: Message, state: FSMContext):
     await msg.delete()
+    m = msg.from_user.last_name
     with Database() as base:
         if base.id_check(msg.from_user.id):
             await msg.answer(f"Приветик,{msg.from_user.username}, давно не виделись", reply_markup=main_menu())

@@ -12,13 +12,10 @@ db = sqlite3.connect("/schedule.db")
 
 c = db.cursor()
 
-# alphabet = "йцукенгшзфывапролджэячсмитбю"
 alphabet = "олджэячсмитбюйцукенгшзфывапр"
-# alphabet = "экн"
 
 for i in itertools.permutations(alphabet, 3):
     search_str = ''.join(i)
-    # print(search_str, end="\t")
     search_url = parse.quote(search_str)
     response = requests.get(f"https://mmu2021:mmu2021@schedule.mi.university/api/search?term={search_url}&type=group")
 
