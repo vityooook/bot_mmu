@@ -1,9 +1,19 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
 
-engine = create_engine("sqlite:///./schedule.db", echo=True)
+class Database:
+    Base = declarative_base()
 
-Session = sessionmaker(bind=engine)
+    def __init__(self):
+        self._engine = create_engine("sqlite:///./schedule.db", echo=True)
+        Session = sessionmaker(bind=self.engine)
+        self._session = Session()
 
-session = Session()
+    @property
+    def session(self):
+        return self._session
+
+    @property
+    def engine(self):
+        return self._engine

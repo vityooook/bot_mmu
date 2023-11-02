@@ -1,14 +1,10 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from engine import engine
+from .engine import Database
 
 
-class Base(DeclarativeBase):
-    pass
-
-
-class User(Base):
+class User(Database.Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -18,12 +14,13 @@ class User(Base):
     username: Mapped[str] = mapped_column(nullable=False)
 
 
-class Group(Base):
+class Group(Database.Base):
     __tablename__ = "groups"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column()
     course: Mapped[str] = mapped_column()
 
-# def register_models():
-Base.metadata.create_all(engine)
+
+def register_models():
+    Database.Base.metadata.create_all(Database().engine)
