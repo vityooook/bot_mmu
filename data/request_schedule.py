@@ -1,19 +1,13 @@
 import requests
-import sqlite3
 import datetime
 
 from schemas import Lessons
-from data.database import Database
-
-
-# db = sqlite3.connect("schedule.db")
-# cur = db.cursor()
+from database.crud import group
 
 
 def request_schedule(user_id, time_data):
     # get group id for API
-    with Database() as base:
-        group_id = base.get_group_id(user_id)
+    group_id = group.get_group_id(user_id)
     # fins first day and last day of week for API
     date_monday_unclean, date_sunday_unclean = data_changing(time_data)
     date_monday = datetime.date.strftime(date_monday_unclean, '%Y.%m.%d')
