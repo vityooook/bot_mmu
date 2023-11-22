@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 
-from data.request_schedule import request_schedule
+from API.request_schedule import request_schedule
 from keyboards.inline.calendar_my import Calendar, CaCallback
 from keyboards.inline.menu_first_schedule import MenuSchedule, FrScCallback
 from keyboards.inline.menu_second_schedule import MenuSecondSchedule, ScScCallback
@@ -15,7 +15,7 @@ router = Router()
 async def command_schedule(msg: Message):
     await msg.delete()
     # remove a reply keyboard so as not to interfere
-    msg_delete = await msg.answer(text='загрузка', reply_markup=ReplyKeyboardRemove())
+    msg_delete = await msg.answer(text='загрузка', reply_markup=main_menu())
     # call a menu with inline keyboard
     await msg.answer(text='выбери', reply_markup=await MenuSchedule().start_menu())
     await bot.delete_message(chat_id=msg_delete.chat.id, message_id=msg_delete.message_id)

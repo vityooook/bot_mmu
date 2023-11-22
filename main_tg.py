@@ -11,7 +11,8 @@ import handlers
 
 async def main():
     dp.include_routers(handlers.users.start.router,
-                       handlers.users.schedule.router)
+                       handlers.users.schedule.router,
+                       handlers.users.delete.router)
     await set_default_commands(dp)
     await bot.delete_webhook(drop_pending_updates=True)
     register_models()

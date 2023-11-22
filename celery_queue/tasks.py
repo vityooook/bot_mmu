@@ -7,7 +7,7 @@ from celery.schedules import crontab
 from aiogram.enums.parse_mode import ParseMode
 
 from loader import bot
-from data import request_schedule
+from API import request_schedule
 
 
 logging.basicConfig(format=u'%(filename)s:%(lineno)-d #%(levelname)-16s [%(asctime)s] %(message)s',

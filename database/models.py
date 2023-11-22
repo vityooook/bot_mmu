@@ -24,25 +24,5 @@ class Group(Base):
     course: Mapped[str] = mapped_column()
 
 
-class Test(Base):
-    __tablename__ = 'test'
-    __table_args__ = {'extend_existing': True}
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    test: Mapped[str] = mapped_column(default="hello")
-
-
 def register_models():
     Base.metadata.create_all(engine)
-
-# if __name__ == '__main__':
-#     from database.crud import user, group
-#     register_models()
-#     # s = group.get_group_id(1)
-#     # sss = group.verify_group(1)
-#     # s = group.verify_group(1)
-#     s = group.test()
-#     print(s)
-
-# def register_models():
-#     Database.Base.metadata.create_all(Database().engine)
