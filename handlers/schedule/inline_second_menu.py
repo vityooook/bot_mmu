@@ -9,7 +9,7 @@ from aiogram.types import CallbackQuery
 
 class ScScCallback(CallbackData, prefix='second'):
     act: str
-    date: Optional[add.date] = None
+    date: timedelta | None
 
 
 class MenuSecondSchedule:

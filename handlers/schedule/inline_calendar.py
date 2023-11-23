@@ -14,7 +14,6 @@ class CaCallback(CallbackData, prefix='calendar'):
 
 
 class Calendar:
-
     async def start_calendar(
             self,
             year: int = datetime.now().year,

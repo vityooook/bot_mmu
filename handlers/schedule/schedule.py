@@ -9,13 +9,11 @@ from keyboards.reply.menu import main_menu
 from loader import bot
 
 router = Router()
-
-
 @router.message(F.text == 'расписание')
 async def command_schedule(msg: Message):
     await msg.delete()
     # remove a reply keyboard so as not to interfere
-    msg_delete = await msg.answer(text='загрузка', reply_markup=main_menu())
+    msg_delete = await msg.answer(text='загрузка', reply_markup=ReplyKeyboardRemove())
     # call a menu with inline keyboard
     await msg.answer(text='выбери', reply_markup=await MenuSchedule().start_menu())
     await bot.delete_message(chat_id=msg_delete.chat.id, message_id=msg_delete.message_id)
