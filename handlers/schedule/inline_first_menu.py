@@ -1,35 +1,29 @@
-
 from datetime import datetime, timedelta
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup
-from aiogram.filters.callback_data import CallbackData
 from aiogram.types import CallbackQuery
 
-from keyboards.inline.calendar_my import Calendar
+from utils.callback_data import ScheduleFirstMenuCallback as Callback
 
 
-class FrScCallback(CallbackData, prefix='first'):      # поработать с названием
-    act: str
-
-
-class MenuSchedule:
-    async def start_menu(self) -> InlineKeyboardMarkup:
+class FirstMenuSchedule:
+    async def menu(self) -> InlineKeyboardMarkup:
 
         builder = InlineKeyboardBuilder()
 
         # First row - this day and next day
-        builder.button(text='сегодня', callback_data=FrScCallback(act="TODAY"))
-        builder.button(text='завтра', callback_data=FrScCallback(act="TOMORROW"))
+        builder.button(text='сегодня', callback_data=Callback(act="TODAY"))
+        builder.button(text='завтра', callback_data=Callback(act="TOMORROW"))
 
         # Second row - calendar
-        builder.button(text='точная дата', callback_data=FrScCallback(act="CALENDAR"))
+        builder.button(text='точная дата', callback_data=Callback(act="CALENDAR"))
 
         # Last row - back to main menu
-        builder.button(text='меню', callback_data=FrScCallback(act="MENU"))
+        builder.button(text='🐈‍⬛ назад', callback_data=Callback(act="BACK"))
 
         builder.adjust(2, 1, 1)
         return builder.as_markup()
 
-    async def process_selection_menu(self, query: CallbackQuery, callback_data: FrScCallback) -> tuple:
+    async def process_selection_menu(self, query: CallbackQuery, callback_data: Callback) -> tuple:
 
         return_data = (str, None)
 
@@ -47,7 +41,7 @@ class MenuSchedule:
             return_data = "CALENDAR", None
 
         # user picked a MENU button, back to main menu
-        elif callback_data.act == 'MENU':
-            return_data = 'MENU', None
+        elif callback_data.act == 'BACK':
+            return_data = 'BACK', None
 
         return return_data

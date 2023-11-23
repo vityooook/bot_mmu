@@ -24,5 +24,5 @@ class Group(Base):
     course: Mapped[str] = mapped_column()
 
 
-def register_models():
+def register_models_database():
     Base.metadata.create_all(engine)

@@ -1,34 +1,26 @@
 from datetime import datetime, timedelta
-import datetime as add
-from typing import Optional
-
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup
-from aiogram.filters.callback_data import CallbackData
 from aiogram.types import CallbackQuery
 
-
-class ScScCallback(CallbackData, prefix='second'):
-    act: str
-    date: timedelta | None
+from utils.callback_data import ScheduleSecondMenuCallback as Callback
 
 
-class MenuSecondSchedule:
+class SecondMenuSchedule:
 
-    async def start_second_menu(self, date: add.date) -> InlineKeyboardMarkup:
+    async def menu(self, date) -> InlineKeyboardMarkup:
         builder = InlineKeyboardBuilder()
 
         # First row - previous day or next day
-        builder.button(text="⬅️", callback_data=ScScCallback(act="PREVIOUS", date=date))
-        builder.button(text='сегодня', callback_data=ScScCallback(act="TODAY"))
-        builder.button(text="➡️", callback_data=ScScCallback(act="NEXT", date=date))
+        builder.button(text="⬅️", callback_data=Callback(act="PREVIOUS", date=date))
+        builder.button(text='сегодня', callback_data=Callback(act="TODAY"))
+        builder.button(text="➡️", callback_data=Callback(act="NEXT", date=date))
+        builder.button(text="🐈‍⬛ назад️", callback_data=Callback(act="BACK"))
 
         # Second row - main menu
-        builder.button(text="меню", callback_data=ScScCallback(act="MENU"))
-
-        builder.adjust(3, 1)
+        builder.adjust(3)
         return builder.as_markup()
 
-    async def process_second_menu(self, query: CallbackQuery, callback_data: ScScCallback) -> tuple:
+    async def process_selection_menu(self, query: CallbackQuery, callback_data: Callback) -> tuple:
         return_data = False, None
         date = callback_data.date
 
@@ -47,7 +39,7 @@ class MenuSecondSchedule:
             callback_data.date = next
             return_data = True, next
 
-        elif callback_data.act == "MENU":
+        elif callback_data.act == "BACK":
             return_data = False, None
 
         return return_data

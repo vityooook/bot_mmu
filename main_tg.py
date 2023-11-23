@@ -4,18 +4,16 @@ import asyncio
 from loader import dp, bot
 from services import set_default_commands
 from celery_queue.tasks import app_celery
-from database.models import register_models
+from database.models import register_models_database
 
-import handlers
+from handlers import get_handlers_router
 
 
 async def main():
-    dp.include_routers(handlers.users.start.router,
-                       handlers.users.schedule.router,
-                       handlers.users.delete.router)
+    dp.include_router(get_handlers_router())
     await set_default_commands(dp)
     await bot.delete_webhook(drop_pending_updates=True)
-    register_models()
+    register_models_database()
     # await asyncio.gather(dp.start_polling(bot), setup_taskiq())
     # await setup_taskiq()
     # logging.info("Queue stating! ")

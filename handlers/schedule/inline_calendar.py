@@ -1,26 +1,19 @@
 import calendar
-
 from datetime import datetime, timedelta, date
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup
-from aiogram.filters.callback_data import CallbackData
 from aiogram.types import CallbackQuery
 
-
-class CaCallback(CallbackData, prefix='calendar'):
-    act: str
-    year: int
-    month: int
-    day: int
+from utils.callback_data import ScheduleCalendarCallback as Callback
 
 
 class Calendar:
     async def start_calendar(
             self,
             year: int = datetime.now().year,
-            month: int = datetime.now().month
+            month: int = datetime.now().month,
     ) -> InlineKeyboardMarkup:
         builder = InlineKeyboardBuilder()
-        ignore_callback = CaCallback(act="IGNORE", year=year, month=month, day=0)
+        ignore_callback = Callback(act="IGNORE", year=year, month=month, day=0)
 
         # First row - Month and Year name
         mouth_name = ["", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь",
@@ -38,14 +31,14 @@ class Calendar:
                 if day == 0:
                     builder.button(text=' ', callback_data=ignore_callback)
                     continue
-                builder.button(text=str(day), callback_data=CaCallback(act='DAY', year=year, month=month, day=day))
+                builder.button(text=str(day), callback_data=Callback(act='DAY', year=year, month=month, day=day))
         # Last row - Buttons
-        builder.button(text='<<', callback_data=CaCallback(act='PREV-MONTH', year=year, month=month, day=1))
-        builder.button(text='>>', callback_data=CaCallback(act='NEXT-MONTH', year=year, month=month, day=1))
+        builder.button(text='<<', callback_data=Callback(act='PREV-MONTH', year=year, month=month, day=1))
+        builder.button(text='>>', callback_data=Callback(act='NEXT-MONTH', year=year, month=month, day=1))
         builder.adjust(1, 7)
         return builder.as_markup()
 
-    async def process_selection(self, query: CallbackQuery, callback_data: CaCallback) -> tuple:
+    async def process_selection(self, query: CallbackQuery, callback_data: Callback) -> tuple:
         return_data = (False, None)
         temp_date = datetime(year=callback_data.year, month=callback_data.month, day=1)
         # processing empty buttons, answering with no action

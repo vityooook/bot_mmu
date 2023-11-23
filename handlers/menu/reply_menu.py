@@ -1,8 +1,7 @@
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, ReplyKeyboardMarkup
 
 
-def main_menu() -> ReplyKeyboardMarkup:
+def menu_reply() -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
-    builder.button(text="расписание")
-    builder.button(text='инфа')
+    builder.button(text="ℹ️ Показать меню")
     return builder.as_markup(resize_keyboard=True)
