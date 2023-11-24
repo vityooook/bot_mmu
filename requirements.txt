@@ -40,3 +40,5 @@ urllib3==2.0.4
 vine==5.0.0
 wcwidth==0.2.8
 yarl==1.9.2
+
+SQLAlchemy~=2.0.22

@@ -66,7 +66,6 @@ async def process_calendar(query: CallbackQuery, callback_data: ScheduleCalendar
         query=query,
         callback_data=callback_data
     )
-
     if selected:
         data = request_schedule(user_id=query.from_user.id, time_data=date_for_schedule)
         await query.message.edit_text(

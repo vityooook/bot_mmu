@@ -8,7 +8,7 @@ from database.crud import group
 def request_schedule(user_id, time_data):
     # get group id for API
     group_id = group.get_group_id(user_id)
-    # fins first day and last day of week for API
+    # find first day and last day of week for API
     date_monday_unclean, date_sunday_unclean = data_changing(time_data)
     date_monday = datetime.date.strftime(date_monday_unclean, '%Y.%m.%d')
     date_sunday = datetime.date.strftime(date_sunday_unclean, '%Y.%m.%d')
