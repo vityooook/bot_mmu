@@ -23,5 +23,14 @@ class Group(Base):
     course: Mapped[str] = mapped_column()
 
 
+class Teacher(Base):
+    __tablename__ = 'teachers'
+    __table_args__ = {'extend_existing': True}
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column()
+    subject: Mapped[str] = mapped_column()
+
+
 def register_models_database():
     Base.metadata.create_all(engine)
