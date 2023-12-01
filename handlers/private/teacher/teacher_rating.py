@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from utils.callback_data import TeacherMenuCallback
-from .inline_menu_back_teacher import InlineMenuBackTeacher
+from keyboard.inline.teacher.inline_menu_back_teacher import InlineMenuBackTeacher
 
 router = Router()
 
