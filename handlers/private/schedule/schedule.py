@@ -2,16 +2,16 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 
 from API.request_schedule import request_schedule
-from keyboard.inline.inline_menu import InlineMenu
+from keyboard.inline.menu.inline_menu import InlineMenu
 from handlers.callback.callback_data import (
     MenuCallback,
     ScheduleCalendarCallback,
     ScheduleFirstMenuCallback,
     ScheduleSecondMenuCallback
 )
-from keyboard.inline.inline_first_menu import FirstMenuSchedule
-from keyboard.inline.inline_second_menu import SecondMenuSchedule
-from keyboard.inline.inline_calendar import Calendar
+from keyboard.inline.schedule.inline_first_menu import FirstMenuSchedule
+from keyboard.inline.schedule.inline_second_menu import SecondMenuSchedule
+from keyboard.inline.schedule.inline_calendar import Calendar
 
 
 router = Router()
