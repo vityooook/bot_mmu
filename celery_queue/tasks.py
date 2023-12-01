@@ -6,13 +6,14 @@ from celery import Celery
 from celery.schedules import crontab
 from aiogram.enums.parse_mode import ParseMode
 
+from config import REDIS_LINK
 from loader import bot
 from API import request_schedule
 
 
 logging.basicConfig(format=u'%(filename)s:%(lineno)-d #%(levelname)-16s [%(asctime)s] %(message)s',
                     level=logging.INFO)
-app_celery = Celery('tasks', broker='redis://127.0.0.1:6379/0', )
+app_celery = Celery('tasks', broker=REDIS_LINK, )
 
 
 @app_celery.task(name='tasks.add')
