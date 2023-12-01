@@ -8,7 +8,7 @@ from aiogram.enums.parse_mode import ParseMode
 
 from config import REDIS_LINK
 from loader import bot
-from API import request_schedule
+from API.request_schedule import request_schedule
 
 
 logging.basicConfig(format=u'%(filename)s:%(lineno)-d #%(levelname)-16s [%(asctime)s] %(message)s',
