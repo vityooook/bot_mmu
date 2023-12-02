@@ -3,16 +3,15 @@ import datetime
 from pydantic import BaseModel, field_validator, ValidationError
 
 
-
 class Lessons(BaseModel):
-    date: datetime.date
-    dayOfWeekString: str
-    beginLesson: str
-    endLesson: str
-    discipline: str
-    kindOfWork: str
-    auditorium: str
-    lecturer: str
+    date: datetime.date  # Дата!
+    dayOfWeekString: str  # День недели
+    beginLesson: str  # Начало пары
+    endLesson: str  # Конец пары
+    discipline: str  # Дисциплина / Пара
+    kindOfWork: str  # Какие занятия
+    auditorium: str  # Аудитория
+    lecturer: str  # Преподаватель
 
     @field_validator("date", mode="before")
     @classmethod
@@ -25,23 +24,20 @@ class Lessons(BaseModel):
             raise ValidationError("Wrong data format")
 
     def __str__(self):
+        auditor = ''
+        disciplin = ''
+        kindOfWork = ''
 
-        return f"""
-{self.beginLesson} - {self.endLesson}
-<b>{self.discipline}</b>({self.kindOfWork})
-{self.auditorium} {self.lecturer}
-        """
+        if self.discipline == self.discipline:
+            disciplin += self.discipline
+            if disciplin == "Иностранный язык":
+                auditor += self.auditorium
+                kindOfWork += self.kindOfWork
 
+            return f"""{disciplin} ({kindOfWork}) : {auditor}\n"""
 
 # lessons = [Lessons(**lesson) for lesson in response.json()]
 # print(lessons)
-
-
-
-
-
-
-
 
 
 # merged_lessons = {}
@@ -58,9 +54,6 @@ class Lessons(BaseModel):
 #         merged_lessons[key].lecturer += f", {lesson.lecturer}"
 #
 # merged_lessons_list = list(merged_lessons.values())
-
-
-
 
 
 # class Lecturer(BaseModel):
