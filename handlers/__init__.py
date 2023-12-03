@@ -6,6 +6,8 @@ def get_handlers_router() -> Router:
     from .groups.schedule import router as group_schedule
     from .private.start import start
     from .private.menu import menu
+    from .private.rating import rating_call_menu
+    from .private.rating import teacher_rating
     from .private.schedule import schedule
     router = Router()
 
@@ -14,5 +16,7 @@ def get_handlers_router() -> Router:
     router.include_router(schedule.router)
     router.include_router(group_start)
     router.include_router(group_schedule)
+    router.include_router(teacher_rating.router)
+    router.include_router(rating_call_menu.router)
 
     return router

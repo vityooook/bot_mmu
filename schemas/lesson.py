@@ -3,7 +3,6 @@ import datetime
 from pydantic import BaseModel, field_validator, ValidationError
 
 
-
 class Lessons(BaseModel):
     date: datetime.date
     dayOfWeekString: str
@@ -13,6 +12,7 @@ class Lessons(BaseModel):
     kindOfWork: str
     auditorium: str
     lecturer: str
+
 
     @field_validator("date", mode="before")
     @classmethod
@@ -32,16 +32,8 @@ class Lessons(BaseModel):
 {self.auditorium} {self.lecturer}
         """
 
-
 # lessons = [Lessons(**lesson) for lesson in response.json()]
 # print(lessons)
-
-
-
-
-
-
-
 
 
 # merged_lessons = {}
@@ -58,9 +50,6 @@ class Lessons(BaseModel):
 #         merged_lessons[key].lecturer += f", {lesson.lecturer}"
 #
 # merged_lessons_list = list(merged_lessons.values())
-
-
-
 
 
 # class Lecturer(BaseModel):

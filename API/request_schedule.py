@@ -2,12 +2,12 @@ import requests
 import datetime
 
 from schemas import Lessons
-from database.crud import group, chat
+from database.crud import user, chat
 
 
-def request_schedule(user_id, time_data):
+def request_schedule(user_id: int, time_data):
     # get group id for API
-    group_id = group.get_group_id(user_id) or chat.get_group_id(user_id)
+    group_id = user.get_user_group_id(user_id) #or chat.get_group_id(user_id)
     # find first day and last day of week for API
     date_monday_unclean, date_sunday_unclean = data_changing(time_data)
     date_monday = datetime.date.strftime(date_monday_unclean, '%Y.%m.%d')

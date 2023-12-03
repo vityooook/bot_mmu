@@ -63,3 +63,10 @@ class Squad(Base):
 
 def register_models_database():
     Base.metadata.create_all(engine)
+
+
+if __name__ == "__main__":
+    Base.metadata.create_all(engine)
+    from database.crud.rating import verify_teacher, get_avg_rating
+    print(get_avg_rating(52))
+    print(verify_teacher("Твердова Татьяна Викторовна"))
