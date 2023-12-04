@@ -2,14 +2,13 @@ import asyncio
 import datetime
 import logging
 
+from aiogram.enums.parse_mode import ParseMode
 from celery import Celery
 from celery.schedules import crontab
-from aiogram.enums.parse_mode import ParseMode
 
+from API import request_schedule
 from config import REDIS_LINK
 from loader import bot
-from API import request_schedule
-
 
 logging.basicConfig(format=u'%(filename)s:%(lineno)-d #%(levelname)-16s [%(asctime)s] %(message)s',
                     level=logging.INFO)
@@ -24,7 +23,6 @@ def send_schedule_daily():
     asyncio.get_event_loop().run_until_complete(
         bot.send_message(chat_id=487961820, text=massage, parse_mode=ParseMode.HTML))
     # bot.send_message(chat_id=487961820, text=massage, parse_mode=ParseMode.HTML)
-
 
 
 app_celery.conf.beat_schedule = {
