@@ -33,3 +33,8 @@ class RatingMenuBackCallback(CallbackData, prefix="rating_back"):
 
 class RatingCancelCallback(CallbackData, prefix="rating_cancel"):
     act: str
+
+
+class RatingFeedbackCallback(CallbackData, prefix="rating_feedback"):
+    act: int
+    question: int

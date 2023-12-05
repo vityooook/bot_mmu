@@ -37,7 +37,10 @@ def get_avg_rating(teacher_id: int):
 
 def add_rating(teacher_id: int, user_id: int, marks: list):
     with session as s:
-        for i in range(1, 6):
-            stmt = Rating(teacher_id=teacher_id, user_id=user_id, quality=i, mark=marks[i])
+        for mark in marks:
+            stmt = Rating(
+                teacher_id=teacher_id, user_id=user_id,
+                quality_id=mark["question"], mark=mark["mark"]
+            )
             s.add(stmt)
         s.commit()
