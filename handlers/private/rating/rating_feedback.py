@@ -7,7 +7,7 @@ from keyboard.inline.rating.inline_menu_rating import InlineMenuRating
 from keyboard.inline.rating.inline_cancel_rating import InlineCancelRating
 from keyboard.inline.rating.inline_feedback import InlineFeedback
 from handlers.callback.callback_data import RatingMenuCallback, RatingCancelCallback, \
-    RatingFeedbackCallback
+    RatingFeedbackCallback, RatingLinkFeedbackCallback
 from database.crud.rating import add_rating
 from .question import question
 from database import crud
@@ -37,10 +37,24 @@ async def process_selecting_teacher(msg: Message, state: FSMContext):
             reply_markup=await InlineFeedback().start_feedback()
         )
     else:
-        await msg.answer(
-            "имя фио преподователя не верное",
-            reply_markup=await InlineCancelRating().menu_back()
-        )
+        await msg.answer("имя фио преподователя не верное")
+
+
+@router.callback_query(RatingLinkFeedbackCallback.filter(F.act == "LINK"))
+async def link_to_feedback(
+        query: CallbackQuery,
+        callback_data: RatingLinkFeedbackCallback,
+        state: FSMContext,
+        ):
+    teacher_name = crud.rating.get_teacher_name(callback_data.teacher_id)
+    await state.update_data(
+        name=teacher_name,
+        id=callback_data.teacher_id
+    )
+    await query.message.edit_text(
+        f"{question[0]}",
+        reply_markup=await InlineFeedback().start_feedback()
+    )
 
 
 @router.callback_query(RatingFeedbackCallback.filter())
@@ -61,7 +75,9 @@ async def process_feedback(
         marks.append(mark_data)
         await query.message.edit_text(
             f"{question[mark_data['question']]}",
-            reply_markup=await InlineFeedback().start_feedback(question=mark_data["question"] + 1)
+            reply_markup=await InlineFeedback().start_feedback(
+                question=mark_data["question"] + 1
+            )
         )
     else:
         del mark_data["select"]

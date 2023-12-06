@@ -10,14 +10,20 @@ def verify_teacher(name: str):
         return stmt.scalar()
 
 
+def get_teacher_name(teacher_id: int):
+    with session as s:
+        stmt = s.query(Teacher.name).where(Teacher.teacher_id == teacher_id)
+        return stmt.scalar()
+
+
 def get_rating(teacher_id: int):
     """
-    SELECT quality.quality AS quality_quality, round(avg(rating.mark), 2) AS round_1
+    SELECT quality.quality AS quality_quality, round(avg(rating.mark), 1) AS round_1
     FROM rating JOIN quality ON quality.quality_id = rating.quality_id
     WHERE rating.teacher_id = <teacher_id> GROUP BY rating.quality_id
     """
     with session as s:
-        stmt = s.query(Quality.quality, func.round(func.avg(Rating.mark), 2)).\
+        stmt = s.query(Quality.quality, func.round(func.avg(Rating.mark), 1)).\
             select_from(Rating).join(Quality, Quality.quality_id == Rating.quality_id).\
             group_by(Rating.quality_id).where(Rating.teacher_id == teacher_id)
         return stmt.all()
@@ -25,12 +31,12 @@ def get_rating(teacher_id: int):
 
 def get_avg_rating(teacher_id: int):
     """
-    SELECT round(avg(rating.mark), 2 AS round_1
+    SELECT round(avg(rating.mark), 1) AS round_1
     FROM rating
     WHERE rating.teacher_id = ?
     """
     with session as s:
-        stmt = s.query(func.round(func.avg(Rating.mark), 2)).\
+        stmt = s.query(func.round(func.avg(Rating.mark), 1)).\
             where(Rating.teacher_id == teacher_id)
         return stmt.scalar()
 

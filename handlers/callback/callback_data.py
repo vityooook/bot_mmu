@@ -38,3 +38,8 @@ class RatingCancelCallback(CallbackData, prefix="rating_cancel"):
 class RatingFeedbackCallback(CallbackData, prefix="rating_feedback"):
     act: int
     question: int
+
+
+class RatingLinkFeedbackCallback(CallbackData, prefix="rating_link_feedback"):
+    act: str
+    teacher_id: int | None

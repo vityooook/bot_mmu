@@ -1,4 +1,3 @@
-from sqlalchemy import select
 
 from database.engine import session
 from database.models import User
