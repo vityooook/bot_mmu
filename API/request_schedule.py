@@ -1,42 +1,15 @@
 import datetime
 from json import JSONDecodeError
+from os import sep
+from shlex import join
 import requests
 
 from database.crud import group, chat
 
 
 def compare_discipline(data):
-    """
-    A function for sorting and sorting unique str from a JSON file
-    """
-    # Обычнный список сюда будут записываться уникальные str
-    unique_discipline = []
-    # Переменная счетчика
-    i = 0
-    # Цикл for для перебора получаемых данных из JSON
-    for _ in data:
-        # Блок try, просто пытаемся поймать ошибку адекватно
-        try:
-            # Проверка на уникальность данных из data[i]['discipline'], если str уникальная то идем дальше
-            if data[i]['discipline'] not in unique_discipline:
-                # Добавляем в конец списка уникальный str из data[i]['discipline'] в список unique_discipline
-                unique_discipline.append(data[i]['discipline'])
-                # Выводим на принт последний элемент из списка
-                print(unique_discipline[-1])
-                # Выводим на принт data[i]['auditorium'] str аудиторию
-                print(data[i]['auditorium'])
-                # Блок else если у нас при проверке получен не уникальный data[i]['discipline']
-            else:
-                # print(data[i]['discipline']) тут я закоментил бред
-
-                # Выводим на принт data[i]['auditorium'] будет выводиться каждый раз когда у нас не уникальный str в data[i]['discipline']
-                print(data[i]['auditorium'])
-            # Как только прошли весь цикл for добавляем 1 к переменной i
-            i += 1
-            # TODO: Добавить вывод в return
-        # Ловим ошибку если не смогли получить данные с JSON
-        except JSONDecodeError:
-            print('Json файл не удалось обработать')
+    # Функция которая не давала мне покоя
+   pass
 
 
 def request_schedule(user_id, time_data):
@@ -59,8 +32,44 @@ def request_schedule(user_id, time_data):
             # Применяем содержимое JSON в data
             data = response.json()
             # Передаем data в функцию compare_discipline
-            compare_discipline(data)
-        # Ловим ошибку если не смогли получить данные с JSON
+            """
+            A function for sorting and sorting unique str from a JSON file
+            """
+            # Обычнный список сюда будут записываться уникальные str
+            unique_discipline = []
+            text = []
+            # Переменная счетчика
+            i = 0
+            # Цикл for для перебора получаемых данных из JSON
+            for _ in data:
+                # Проверка на уникальность данных из data[i]['discipline'], если str уникальная то идем дальше
+                if data[i]['discipline'] not in unique_discipline:
+                    # Добавляем в конец списка уникальный str из data[i]['discipline'] в список unique_discipline
+                    unique_discipline.append(data[i]['discipline'])
+                    text.append(data[i]['discipline'])
+                    # Выводим на принт последний элемент из списка
+                    print(unique_discipline[-1])
+                    # Выводим на принт data[i]['auditorium'] str аудиторию
+                    print(data[i]['auditorium'])
+                    text.append(data[i]['auditorium'])
+                    # Блок else если у нас при проверке получен не уникальный data[i]['discipline']
+                else:
+                    # print(data[i]['discipline']) тут я закоментил бред
+
+                    # Выводим на принт data[i]['auditorium'] будет выводиться каждый раз когда у нас не уникальный str в data[i]['discipline']
+                    print(data[i]['auditorium'])
+                    text.append(data[i]['auditorium'])
+                # Как только прошли весь цикл for добавляем 1 к переменной i
+                i += 1
+                # if not unique_discipline:
+                #     text_return += 'Пар нет на указанную дату!'
+                #     text_return = f"{datetime.date.strftime(datetime.datetime.now(), '%Y.%m.%d')}\n" + \
+                #         text_return
+                # TODO: Добавить вывод в return
+            text = ', \n'.join(text)
+            
+            return f"""{text}"""
+        # Ловим ошибку если не смогли получить данные с JSONz
         except JSONDecodeError:
             print('Ответ не удалось обработать')
     # Ловим ошибку если сайт не доступен ошибка 404 или 401, 500

@@ -157,3 +157,4 @@ cython_debug/
 .ruff_cache
 eggs
 .vscode
+schedule.db

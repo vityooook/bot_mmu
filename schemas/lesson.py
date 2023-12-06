@@ -2,6 +2,7 @@ import datetime
 
 from pydantic import BaseModel, field_validator, ValidationError
 
+"""Данный файл пока что не нужен, его просто можно оставить либо делитнуть с проекта"""
 
 class Lessons(BaseModel):
     date: datetime.date  # Дата!
@@ -28,13 +29,11 @@ class Lessons(BaseModel):
         disciplin = ''
         kindOfWork = ''
 
-        if self.discipline == self.discipline:
-            disciplin += self.discipline
-            if disciplin == "Иностранный язык":
-                auditor += self.auditorium
-                kindOfWork += self.kindOfWork
-
-            return f"""{disciplin} ({kindOfWork}) : {auditor}\n"""
+    
+        return f"""{disciplin} ({kindOfWork}) : {auditor}\n"""
+    
+    
+    
 
 # lessons = [Lessons(**lesson) for lesson in response.json()]
 # print(lessons)
