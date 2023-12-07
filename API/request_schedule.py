@@ -1,18 +1,63 @@
 import datetime
-from json import JSONDecodeError
-from os import sep
-from shlex import join
-import requests
 
+from json import JSONDecodeError
+from shlex import join
 from database.crud import group, chat
 
-
-def compare_discipline(data):
-    # Функция которая не давала мне покоя
-   pass
+import requests
 
 
-def request_schedule(user_id, time_data):
+def get_week_schedule(user_id: int, time_data):
+    # get group id for API
+    group_id = group.get_group_id(user_id) or chat.get_group_id(user_id)
+
+    # find first day and last day of week for API
+    date_monday_unclean, date_sunday_unclean = data_changing(time_data)
+    date_monday = datetime.date.strftime(date_monday_unclean, '%Y.%m.%d')
+    date_sunday = datetime.date.strftime(date_sunday_unclean, '%Y.%m.%d')
+
+    # requests APi and get json with lessons
+    response = requests.get(
+        f"https://mmu2021:mmu2021@schedule.mi.university/api/schedule/group/"
+        f"{group_id}?start={date_monday}&finish={date_sunday}&lng=1")
+    if response.status_code == 200:
+        try:
+            data = response.json()
+            
+            unique_discipline = []
+            unique_auditorium = []
+            text = []
+            
+            i = 0
+           
+            for _ in data:
+                if data[i]['discipline'] not in unique_discipline:
+
+                    unique_discipline.append(data[i]['discipline'])
+                    unique_auditorium.append(data[i]['auditorium'])
+
+                    text.append(data[i]['discipline'])
+                    text.append(data[i]['auditorium'])
+                
+
+                    print(unique_discipline[-1])
+                    print(unique_auditorium[-1])
+                
+                else:
+                    if data[i]['auditorium'] not in unique_auditorium:
+                        
+                        print(data[i]['auditorium'])
+                        text.append(data[i]['auditorium'])
+                i += 1
+                text = ', \n'.join(text)
+            return f"""{text}"""
+        except JSONDecodeError:
+            print('Ответ не удалось обработать')
+    else:
+        print("Сайт не доступен")
+
+
+def get_day_schedule(user_id: int, time_data):
     # get group id for API
     group_id = group.get_group_id(user_id) or chat.get_group_id(user_id)
 
@@ -37,6 +82,7 @@ def request_schedule(user_id, time_data):
             """
             # Обычнный список сюда будут записываться уникальные str
             unique_discipline = []
+            unique_auditorium = []
             text = []
             # Переменная счетчика
             i = 0
@@ -44,21 +90,25 @@ def request_schedule(user_id, time_data):
             for _ in data:
                 # Проверка на уникальность данных из data[i]['discipline'], если str уникальная то идем дальше
                 if data[i]['discipline'] not in unique_discipline:
+
                     # Добавляем в конец списка уникальный str из data[i]['discipline'] в список unique_discipline
                     unique_discipline.append(data[i]['discipline'])
-                    text.append(data[i]['discipline'])
-                    # Выводим на принт последний элемент из списка
-                    print(unique_discipline[-1])
-                    # Выводим на принт data[i]['auditorium'] str аудиторию
-                    print(data[i]['auditorium'])
-                    text.append(data[i]['auditorium'])
-                    # Блок else если у нас при проверке получен не уникальный data[i]['discipline']
-                else:
-                    # print(data[i]['discipline']) тут я закоментил бред
+                    unique_auditorium.append(data[i]['auditorium'])
 
-                    # Выводим на принт data[i]['auditorium'] будет выводиться каждый раз когда у нас не уникальный str в data[i]['discipline']
-                    print(data[i]['auditorium'])
+                    text.append(data[i]['discipline'])
                     text.append(data[i]['auditorium'])
+                # Выводим на принт последний элемент из списка
+
+                    print(unique_discipline[-1])
+                    print(unique_auditorium[-1])
+                # Выводим на принт data[i]['auditorium'] str аудиторию
+                # Блок else если у нас при проверке получен не уникальный data[i]['discipline']
+                else:
+                    if data[i]['auditorium'] not in unique_auditorium:
+                        # print(data[i]['discipline']) тут я закоментил бред
+                        # Выводим на принт data[i]['auditorium'] будет выводиться каждый раз когда у нас не уникальный str в data[i]['discipline']
+                        print(data[i]['auditorium'])
+                        text.append(data[i]['auditorium'])
                 # Как только прошли весь цикл for добавляем 1 к переменной i
                 i += 1
                 # if not unique_discipline:
@@ -66,8 +116,7 @@ def request_schedule(user_id, time_data):
                 #     text_return = f"{datetime.date.strftime(datetime.datetime.now(), '%Y.%m.%d')}\n" + \
                 #         text_return
                 # TODO: Добавить вывод в return
-            text = ', \n'.join(text)
-            
+                text = ', \n'.join(text)
             return f"""{text}"""
         # Ловим ошибку если не смогли получить данные с JSONz
         except JSONDecodeError:
