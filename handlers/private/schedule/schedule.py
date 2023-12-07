@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 
-from API.request_schedule import request_schedule
+from API.request_schedule import get_day_schedule
 from keyboard.inline.menu.inline_menu import InlineMenu
 from handlers.callback.callback_data import (
     MenuCallback,
@@ -40,7 +40,7 @@ async def process_first_schedule(
     )
 
     if selected == "TODAY" or selected == "TOMORROW":
-        data = request_schedule(user_id=query.from_user.id, time_data=date_for_schedule)
+        data = get_day_schedule(user_id=query.from_user.id, date=date_for_schedule)
         await query.message.edit_text(
             data,
             reply_markup=await SecondMenuSchedule().menu(date=date_for_schedule)
@@ -66,7 +66,7 @@ async def process_calendar(query: CallbackQuery, callback_data: ScheduleCalendar
         callback_data=callback_data
     )
     if selected:
-        data = request_schedule(user_id=query.from_user.id, time_data=date_for_schedule)
+        data = get_day_schedule(user_id=query.from_user.id, date=date_for_schedule)
         await query.message.edit_text(
             data,
             reply_markup=await SecondMenuSchedule().menu(date=date_for_schedule)
@@ -84,7 +84,7 @@ async def process_second_schedule(
         callback_data=callback_data
     )
     if selected:
-        data = request_schedule(user_id=query.from_user.id, time_data=date_for_schedule)
+        data = get_day_schedule(user_id=query.from_user.id, date=date_for_schedule)
         await query.message.edit_text(
             data,
             reply_markup=await SecondMenuSchedule().menu(date=date_for_schedule)

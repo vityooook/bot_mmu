@@ -2,30 +2,42 @@ import requests
 import datetime
 
 from schemas import Lessons
-from database.crud import user, chat
+from database.crud import user
 
 
-def request_schedule(user_id: int, time_data):
+def get_day_schedule(user_id: int, date):
+    # получаем id группы для API
+    group_id = user.get_user_group_id(user_id)
+    # переводим из datetime -> str: 2023.12.07
+    date_str = datetime.date.strftime(date, '%Y.%m.%d')
+    # делаем запрос к API и получеем расписание на один день
+    response = requests.get(
+        f"https://mmu2021:mmu2021@schedule.mi.university/api/schedule/group/"
+        f"{group_id}?start={date_str}&finish={date_str}&lng=1") #
+
+    # здесь начинаешь исправлять
+    all_lessons = [Lessons(**lesson) for lesson in response.json()]
+    text = ''
+    for lesson in all_lessons:
+        text += str(lesson)
+    if not text:
+        text += 'Пар нет на указанную дату, кайфуем!'
+    text = f"{date_str}\n" + text
+    return text
+
+
+def get_week_schedule(user_id: int, date):
     # get group id for API
     group_id = user.get_user_group_id(user_id) #or chat.get_group_id(user_id)
     # find first day and last day of week for API
-    date_monday_unclean, date_sunday_unclean = data_changing(time_data)
+    date_monday_unclean, date_sunday_unclean = data_changing(date)
     date_monday = datetime.date.strftime(date_monday_unclean, '%Y.%m.%d')
     date_sunday = datetime.date.strftime(date_sunday_unclean, '%Y.%m.%d')
     # requests APi and get json with lessons
     response = requests.get(
         f"https://mmu2021:mmu2021@schedule.mi.university/api/schedule/group/"
         f"{group_id}?start={date_monday}&finish={date_sunday}&lng=1")
-    all_lessons = [Lessons(**lesson) for lesson in response.json()]
-    text = ''
-    # process the data and turn into str
-    for lesson in all_lessons:
-        if lesson.date == time_data:
-            text += str(lesson)
-    if not text:
-        text += 'Пар нет на указанную дату, кайфуем!'
-    text = f"{datetime.date.strftime(time_data, '%Y.%m.%d')}\n" + text
-    return text
+    # тут нужно сделать расписание на неделю с красивым оформлением (на будующее)
 
 
 def data_changing(time_data):
