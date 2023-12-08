@@ -9,7 +9,7 @@ class User(Base):
     __table_args__ = {'extend_existing': True}
 
     user_id: Mapped[int] = mapped_column(primary_key=True)
-    group_id: Mapped[str] = mapped_column(ForeignKey("groups.group_id"))
+    group_id: Mapped[int] = mapped_column(ForeignKey("groups.group_id"))
     first_name: Mapped[str] = mapped_column()
     last_name: Mapped[str] = mapped_column()
     username: Mapped[str] = mapped_column(nullable=False)
