@@ -2,13 +2,14 @@ import asyncio
 import datetime
 import logging
 
-from aiogram.enums.parse_mode import ParseMode
 from celery import Celery
 from celery.schedules import crontab
+from aiogram.enums.parse_mode import ParseMode
 
-from API.request_schedule import get_day_schedule, get_week_schedule
 from config import REDIS_LINK
 from loader import bot
+from API.request_schedule import get_day_schedule
+
 
 logging.basicConfig(format=u'%(filename)s:%(lineno)-d #%(levelname)-16s [%(asctime)s] %(message)s',
                     level=logging.INFO)
@@ -19,7 +20,7 @@ app_celery = Celery('tasks', broker=REDIS_LINK, )
 def send_schedule_daily():
     print('celery is working...')
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-    massage = get_day_schedule(user_id=487961820, time_data=tomorrow)
+    massage = get_day_schedule(user_id=487961820, date=tomorrow)
     asyncio.get_event_loop().run_until_complete(
         bot.send_message(chat_id=487961820, text=massage, parse_mode=ParseMode.HTML))
     # bot.send_message(chat_id=487961820, text=massage, parse_mode=ParseMode.HTML)

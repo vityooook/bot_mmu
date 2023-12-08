@@ -9,7 +9,7 @@ class InlineMenu:
 
         builder.button(text="📅 расписание", callback_data=MenuCallback(act="schedule"))
 
-        builder.button(text="👨‍🏫 рейтинг", callback_data=MenuCallback(act="teacher_rating"))
+        builder.button(text="👨‍🏫 рейтинг", callback_data=MenuCallback(act="RATING"))
 
         builder.button(text="⚙️ настройки", callback_data=MenuCallback(act="settings"))
 

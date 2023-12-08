@@ -23,13 +23,13 @@ def get_week_schedule(user_id: int, time_data):
     if response.status_code == 200:
         try:
             data = response.json()
-            
+
             unique_discipline = []
             unique_auditorium = []
             text = []
-            
+
             i = 0
-           
+
             for _ in data:
                 if data[i]['discipline'] not in unique_discipline:
 
@@ -38,14 +38,13 @@ def get_week_schedule(user_id: int, time_data):
 
                     text.append(data[i]['discipline'])
                     text.append(data[i]['auditorium'])
-                
 
                     print(unique_discipline[-1])
                     print(unique_auditorium[-1])
-                
+
                 else:
                     if data[i]['auditorium'] not in unique_auditorium:
-                        
+
                         print(data[i]['auditorium'])
                         text.append(data[i]['auditorium'])
                 i += 1

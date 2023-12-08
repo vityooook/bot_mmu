@@ -33,10 +33,10 @@ async def cmd_start_handler(msg: Message, state: FSMContext):
 @router.message(Userinfo.user_group)
 async def process_user_group(msg: Message, state: FSMContext):
     if crud.group.verify_group(msg.text.upper()):
-        await state.update_data(user_group=msg.text.upper())
-        user_group = await state.get_data()
+        await state.clear()
+        group_id = crud.group.verify_group(msg.text.upper())
         info = msg.from_user
-        crud.user.add_user_info(info.id, user_group['user_group'],
+        crud.user.add_user_info(info.id, group_id,
                                 info.first_name, info.last_name,
                                 info.username)
         await msg.answer("спасибо, все супер\nтеперь ты можешь получить расписание",

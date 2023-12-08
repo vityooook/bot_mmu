@@ -1,1 +1,1 @@
-from database.crud import user, group, chat
+from database.crud import user, group, chat, rating

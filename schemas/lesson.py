@@ -2,17 +2,17 @@ import datetime
 
 from pydantic import BaseModel, field_validator, ValidationError
 
-"""Данный файл пока что не нужен, его просто можно оставить либо делитнуть с проекта"""
 
 class Lessons(BaseModel):
-    date: datetime.date  # Дата!
-    dayOfWeekString: str  # День недели
-    beginLesson: str  # Начало пары
-    endLesson: str  # Конец пары
-    discipline: str  # Дисциплина / Пара
-    kindOfWork: str  # Какие занятия
-    auditorium: str  # Аудитория
-    lecturer: str  # Преподаватель
+    date: datetime.date
+    dayOfWeekString: str
+    beginLesson: str
+    endLesson: str
+    discipline: str
+    kindOfWork: str
+    auditorium: str
+    lecturer: str
+
 
     @field_validator("date", mode="before")
     @classmethod
@@ -25,15 +25,12 @@ class Lessons(BaseModel):
             raise ValidationError("Wrong data format")
 
     def __str__(self):
-        auditor = ''
-        disciplin = ''
-        kindOfWork = ''
 
-    
-        return f"""{disciplin} ({kindOfWork}) : {auditor}\n"""
-    
-    
-    
+        return f"""
+{self.beginLesson} - {self.endLesson}
+<b>{self.discipline}</b>({self.kindOfWork})
+{self.auditorium} {self.lecturer}
+        """
 
 # lessons = [Lessons(**lesson) for lesson in response.json()]
 # print(lessons)
