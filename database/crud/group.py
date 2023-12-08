@@ -7,6 +7,7 @@ from database.models import Group, User
 def verify_group(name: str):
     with session as s:
         stmt = s.query(Group.group_id).where(Group.name == name)
+        print(stmt)
         return stmt.scalar()
 
 
