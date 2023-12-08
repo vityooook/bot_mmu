@@ -23,20 +23,23 @@ async def see_rating(query: CallbackQuery, state: FSMContext):
 
 @router.message(Teacher.name)
 async def process_selecting_teacher(msg: Message, state: FSMContext):
-    if crud.rating.verify_teacher(msg.text.title()):
+    teacher_id = crud.rating.verify_teacher(msg.text.title())
+    if teacher_id:
         await state.clear()
-        teacher_id = crud.rating.verify_teacher(msg.text.title())
         teacher_name = msg.text.title()
+        teacher_subject = crud.rating.get_teacher_subject(teacher_id)
         rating = crud.rating.get_rating(teacher_id)
         rating_avg = crud.rating.get_avg_rating(teacher_id)
         if rating:
             await msg.answer(
-                f"<b>{teacher_name}</b>\n\n<b>Средний балл:</b>{rating_avg}"
-                f"\n<b>Чувство юмора:</b> {rating[0][1]}"
-                f"\n<b>Объективность:</b> {rating[1][1]}"
-                f"\n<b>Требовательность:</b> {rating[2][1]}"
-                f"\n<b>Изложение материала:</b> {rating[3][1]}"
-                f"\n<b>Организованность:</b> {rating[4][1]}",
+                f"<b>{teacher_name}</b>" 
+                f"<i>\nДисциплина: {teacher_subject}</i>"
+                f"\n\n<b>Средний балл:</b> {rating_avg}"
+                f"\n\nЧувство юмора: {rating[0][1]}"
+                f"\nОбъективность: {rating[1][1]}"
+                f"\nТребовательность: {rating[2][1]}"
+                f"\nИзложение материала: {rating[3][1]}"
+                f"\nОрганизованность: {rating[4][1]}",
                 reply_markup=await InlineLinkBackRating().link_back(
                     teacher_id=teacher_id
                 )

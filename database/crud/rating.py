@@ -10,11 +10,23 @@ def verify_teacher(name: str):
         return stmt.scalar()
 
 
+def verify_feedback(user_id: int, teacher_id: int):
+    with session as s:
+        stmt = s.query(Rating.teacher_id).where((Rating.user_id == user_id) &
+                                                (Rating.teacher_id == teacher_id)).limit(1)
+        return stmt.scalar()
+
+
 def get_teacher_name(teacher_id: int):
     with session as s:
         stmt = s.query(Teacher.name).where(Teacher.teacher_id == teacher_id)
         return stmt.scalar()
 
+
+def get_teacher_subject(teacher_id: int):
+    with session as s:
+        stmt = s.query(Teacher.subject).where(Teacher.teacher_id == teacher_id)
+        return stmt.scalar()
 
 def get_rating(teacher_id: int):
     """

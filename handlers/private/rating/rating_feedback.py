@@ -28,14 +28,20 @@ async def see_rating(query: CallbackQuery, state: FSMContext):
 
 @router.message(TeacherFeedback.name)
 async def process_selecting_teacher(msg: Message, state: FSMContext):
-    if crud.rating.verify_teacher(msg.text.title()):
-        teacher_id = crud.rating.verify_teacher(msg.text.title())
-        name = msg.text.title()
-        await state.update_data(name=name, id=teacher_id)
-        await msg.answer(
-            f"{question[0]}",
-            reply_markup=await InlineFeedback().start_feedback()
-        )
+    teacher_id = crud.rating.verify_teacher(msg.text.title())
+    if teacher_id:
+        if not crud.rating.verify_feedback(
+                user_id=msg.from_user.id,
+                teacher_id=teacher_id
+        ):
+            name = msg.text.title()
+            await state.update_data(name=name, id=teacher_id)
+            await msg.answer(
+                f"{question[0]}",
+                reply_markup=await InlineFeedback().start_feedback()
+            )
+        else:
+            await msg.answer("вы уже оставляли отзыв")
     else:
         await msg.answer("имя фио преподователя не верное")
 
@@ -45,16 +51,24 @@ async def link_to_feedback(
         query: CallbackQuery,
         callback_data: RatingLinkFeedbackCallback,
         state: FSMContext,
-        ):
-    teacher_name = crud.rating.get_teacher_name(callback_data.teacher_id)
-    await state.update_data(
-        name=teacher_name,
-        id=callback_data.teacher_id
-    )
-    await query.message.edit_text(
-        f"{question[0]}",
-        reply_markup=await InlineFeedback().start_feedback()
-    )
+):
+    if not crud.rating.verify_feedback(
+            user_id=query.from_user.id,
+            teacher_id=callback_data.teacher_id
+    ):
+        teacher_name = crud.rating.get_teacher_name(callback_data.teacher_id)
+        await state.update_data(
+            name=teacher_name,
+            id=callback_data.teacher_id
+        )
+        await query.message.edit_text(
+            f"{question[0]}",
+            reply_markup=await InlineFeedback().start_feedback()
+        )
+    else:
+        await query.message.edit_text(
+            "вы уже оставляли отзыв"
+        )
 
 
 @router.callback_query(RatingFeedbackCallback.filter())
@@ -63,7 +77,7 @@ async def process_feedback(
         callback_data: RatingFeedbackCallback,
         state: FSMContext,
         marks: list = []
-        ):
+):
     await query.message.edit_text("мур мур...")
     mark_data = await InlineFeedback().process_selection(
         query=query,
