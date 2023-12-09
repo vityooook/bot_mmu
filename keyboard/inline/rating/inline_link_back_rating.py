@@ -8,17 +8,17 @@ class InlineLinkBackRating:
         builder = InlineKeyboardBuilder()
 
         builder.button(
-            text="оставить отзыв",
+            text="✍️ отзыв",
             callback_data=RatingLinkFeedbackCallback(
                 act="LINK",
                 teacher_id=f"{teacher_id}"
             )
         )
         builder.button(
-            text="назад",
+            text="🐈‍⬛ назад",
             callback_data=RatingLinkFeedbackCallback(
                 act="BACK",
-                teacher_id=None
+                teacher_id=0
             )
         )
         builder.adjust(1)

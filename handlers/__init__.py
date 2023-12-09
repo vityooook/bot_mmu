@@ -17,8 +17,8 @@ def get_handlers_router() -> Router:
     router.include_router(schedule.router)
     router.include_router(group_start)
     router.include_router(group_schedule)
-    router.include_router(teacher_rating.router)
     router.include_router(rating_call_menu.router)
+    router.include_router(teacher_rating.router)
     router.include_router(rating_feedback.router)
 
     return router

@@ -42,4 +42,4 @@ class RatingFeedbackCallback(CallbackData, prefix="rating_feedback"):
 
 class RatingLinkFeedbackCallback(CallbackData, prefix="rating_link_feedback"):
     act: str
-    teacher_id: int | None
+    teacher_id: int

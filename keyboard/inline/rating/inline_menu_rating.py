@@ -7,13 +7,13 @@ class InlineMenuRating:
     async def menu(self) -> InlineKeyboardMarkup:
         builder = InlineKeyboardBuilder()
 
-        builder.button(text="посмотреть рейтинг",
+        builder.button(text="👀 рейтинг",
                        callback_data=RatingMenuCallback(act="SEE-RATING"))
 
-        builder.button(text="оставить отзыв",
+        builder.button(text="✍️ отзыв",
                        callback_data=RatingMenuCallback(act="LEAVE-FEEDBACK"))
 
-        builder.button(text="назад",
+        builder.button(text="🐈‍⬛ назад",
                        callback_data=RatingMenuCallback(act="BACK"))
 
         builder.adjust(2, 1)
