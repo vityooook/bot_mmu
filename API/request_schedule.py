@@ -135,9 +135,9 @@ def get_day_schedule(user_id: int, date):
                             # Выводим на принт data[i]['auditorium'] будет выводиться каждый раз когда у нас не уникальный str в data[i]['discipline']
 
                             # ⏱️ | 10:30 - 11:50
-                            beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                            # beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
                             # Методы принятия управленческих решений (Лек)
-                            discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
+                            # discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
                             # добавить препод
                             auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
 
