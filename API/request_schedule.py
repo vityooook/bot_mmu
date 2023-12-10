@@ -35,18 +35,36 @@ def get_week_schedule(user_id: int, date):
 
                     unique_discipline.append(data[i]['discipline'])
                     unique_auditorium.append(data[i]['auditorium'])
+                    # Ничего умнее я не придумал)
+                    # Суббота (09.12.2023)
+                    jsondate = f"{data[i]['dayOfWeekString']} (<b>{data[i]['date']}</b>)"
+                    # ⏱️ | 10:30 - 11:50
+                    beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                    # Методы принятия управленческих решений (Лек)
+                    discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
+                    # 219(п) - Ф.И.О
+                    auditorium = f"\n{data[i]['auditorium']} - {data[i]['lecturer']}"
 
-                    text.append(data[i]['discipline'])
-                    text.append(data[i]['auditorium'])
+                    text.append(jsondate)
+                    text.append(beginLesson)
+                    text.append(discipline)
+                    text.append(auditorium)
 
                     print(unique_discipline[-1])
                     print(unique_auditorium[-1])
-
                 else:
                     if data[i]['auditorium'] not in unique_auditorium:
 
-                        print(data[i]['auditorium'])
-                        text.append(data[i]['auditorium'])
+                        # ⏱️ | 10:30 - 11:50
+                        beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                        # Методы принятия управленческих решений (Лек)
+                        discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
+                        # добавить препод
+                        auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
+
+                        text.append(beginLesson)
+                        text.append(discipline)
+                        text.append(auditorium)
                 i += 1
                 text = ', \n'.join(text)
             return f"""{text}"""
@@ -74,9 +92,9 @@ def get_day_schedule(user_id: int, date):
             # Применяем содержимое JSON в data
             data = response.json()
             if not data:
-               text = "Пар нет! кайф"
+                text = "Пар нет! кайф"
             else:
-                 # Передаем data в функцию compare_discipline
+                # Передаем data в функцию compare_discipline
                 # Обычнный список сюда будут записываться уникальные str
                 unique_discipline = []
                 unique_auditorium = []
@@ -91,9 +109,20 @@ def get_day_schedule(user_id: int, date):
                         # Добавляем в конец списка уникальный str из data[i]['discipline'] в список unique_discipline
                         unique_discipline.append(data[i]['discipline'])
                         unique_auditorium.append(data[i]['auditorium'])
+                        # Ничего умнее я не придумал)
+                        # Суббота (09.12.2023)
+                        jsondate = f"{data[i]['dayOfWeekString']} (<b>{data[i]['date']}</b>)\n"
+                        # ⏱️ | 10:30 - 11:50
+                        beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                        # Методы принятия управленческих решений (Лек)
+                        discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
+                        # 219(п) - Ф.И.О
+                        auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}\n"
 
-                        text.append(data[i]['discipline'])
-                        text.append(data[i]['auditorium'])
+                        text.append(jsondate)
+                        text.append(beginLesson)
+                        text.append(discipline)
+                        text.append(auditorium)
                     # Выводим на принт последний элемент из списка
 
                         print(unique_discipline[-1])
@@ -104,16 +133,21 @@ def get_day_schedule(user_id: int, date):
                         if data[i]['auditorium'] not in unique_auditorium:
                             # print(data[i]['discipline']) тут я закоментил бред
                             # Выводим на принт data[i]['auditorium'] будет выводиться каждый раз когда у нас не уникальный str в data[i]['discipline']
-                            print(data[i]['auditorium'])
-                            text.append(data[i]['auditorium'])
+
+                            # ⏱️ | 10:30 - 11:50
+                            # beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                            # Методы принятия управленческих решений (Лек)
+                            # discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
+                            # добавить препод
+                            auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
+
+                            text.append(beginLesson)
+                            text.append(discipline)
+                            text.append(auditorium)
                     # Как только прошли весь цикл for добавляем 1 к переменной i
                     i += 1
-                    # if not unique_discipline:
-                    #     text_return += 'Пар нет на указанную дату!'
-                    #     text_return = f"{datetime.date.strftime(datetime.datetime.now(), '%Y.%m.%d')}\n" + \
-                    #         text_return
                     # TODO: Добавить вывод в return
-                text = ', \n'.join(text)
+                text = ' \n'.join(text)
             return f"""{text}"""
         # Ловим ошибку если не смогли получить данные с JSONz
         except JSONDecodeError:
