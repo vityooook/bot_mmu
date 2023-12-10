@@ -102,4 +102,6 @@ async def process_feedback(
             marks=marks
         )
         marks.clear()
-        await query.message.edit_text("спасибо, ответ записан")
+        await query.message.edit_text(
+            "спасибо, ответы записан 😼",
+        )

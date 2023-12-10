@@ -18,7 +18,9 @@ class Teacher(StatesGroup):
 
 @router.callback_query(RatingMenuCallback.filter(F.act == "SEE-RATING"))
 async def see_rating(query: CallbackQuery, state: FSMContext):
-    await query.message.edit_text("напиши фио преподователя")
+    await query.message.edit_text(
+        "<b>Пожалуйста, напиши ФИО преподавателя.</b>"
+        "<i>\n\nДля отмены вызови меню, нажав на соответствующую кнопку.</i>")
     await state.set_state(Teacher.name)
 
 
@@ -60,11 +62,3 @@ async def process_selecting_teacher(msg: Message, state: FSMContext):
         await msg.answer(
             "фио преподователя не верное"
         )
-
-
-# @router.callback_query(RatingLinkFeedbackCallback.filter(F.act == "BACK"))
-# async def teacher_rating(query: CallbackQuery):
-#     await query.message.edit_text(
-#         text="меню рейтинга преподователей:",
-#         reply_markup=await InlineMenuRating().menu()
-#     )
