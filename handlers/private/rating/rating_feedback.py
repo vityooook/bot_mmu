@@ -3,6 +3,7 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
+from keyboard.inline.menu.inline_menu import InlineMenu
 from keyboard.inline.rating.inline_menu_rating import InlineMenuRating
 from keyboard.inline.rating.inline_cancel_rating import InlineCancelRating
 from keyboard.inline.rating.inline_feedback import InlineFeedback
@@ -103,5 +104,7 @@ async def process_feedback(
         )
         marks.clear()
         await query.message.edit_text(
-            "спасибо, ответы записан 😼",
+            "😼 спасибо, ответы записаны 😼"
+            "\n\n<b>Выберите нужное действие: </b> ",
+            reply_markup=await InlineMenu().menu()
         )
