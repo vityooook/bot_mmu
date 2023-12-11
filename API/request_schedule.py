@@ -97,18 +97,18 @@ def get_day_schedule(user_id: int, date):
                 # Передаем data в функцию compare_discipline
                 # Обычнный список сюда будут записываться уникальные str
                 unique_discipline = []
-                unique_auditorium = []
+                unique_begin = []
                 text = []
                 # Переменная счетчика
                 i = 0
                 # Цикл for для перебора получаемых данных из JSON
                 for _ in data:
                     # Проверка на уникальность данных из data[i]['discipline'], если str уникальная то идем дальше
-                    if data[i]['discipline'] not in unique_discipline:
+                    if data[i]['discipline'] not in unique_discipline and data[i]['beginLesson'] not in unique_begin:
 
                         # Добавляем в конец списка уникальный str из data[i]['discipline'] в список unique_discipline
                         unique_discipline.append(data[i]['discipline'])
-                        unique_auditorium.append(data[i]['auditorium'])
+                        unique_begin.append(data[i]['auditorium'])
                         # Ничего умнее я не придумал)
                         # Суббота (09.12.2023)
                         jsondate = f"{data[i]['dayOfWeekString']} (<b>{data[i]['date']}</b>)\n"
@@ -126,24 +126,24 @@ def get_day_schedule(user_id: int, date):
                     # Выводим на принт последний элемент из списка
 
                         print(unique_discipline[-1])
-                        print(unique_auditorium[-1])
+                        print(unique_begin[-1])
                     # Выводим на принт data[i]['auditorium'] str аудиторию
                     # Блок else если у нас при проверке получен не уникальный data[i]['discipline']
                     else:
-                        if data[i]['auditorium'] not in unique_auditorium:
-                            # print(data[i]['discipline']) тут я закоментил бред
-                            # Выводим на принт data[i]['auditorium'] будет выводиться каждый раз когда у нас не уникальный str в data[i]['discipline']
+                    
+                        # print(data[i]['discipline']) тут я закоментил бред
+                        # Выводим на принт data[i]['auditorium'] будет выводиться каждый раз когда у нас не уникальный str в data[i]['discipline']
 
-                            # ⏱️ | 10:30 - 11:50
-                            # beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
-                            # Методы принятия управленческих решений (Лек)
-                            # discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
-                            # добавить препод
-                            auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
+                        # ⏱️ | 10:30 - 11:50
+                        # beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                        # Методы принятия управленческих решений (Лек)
+                        # discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
+                        # добавить препод
+                        auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
 
-                            text.append(beginLesson)
-                            text.append(discipline)
-                            text.append(auditorium)
+                        text.append(beginLesson)
+                        text.append(discipline)
+                        text.append(auditorium)
                     # Как только прошли весь цикл for добавляем 1 к переменной i
                     i += 1
                     # TODO: Добавить вывод в return
