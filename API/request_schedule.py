@@ -25,49 +25,47 @@ def get_week_schedule(user_id: int, date):
             data = response.json()
 
             unique_discipline = []
-            unique_auditorium = []
+            unique_begin = []
             text = []
 
             i = 0
 
             for _ in data:
-                if data[i]['discipline'] not in unique_discipline:
+                if data[i]['discipline'] not in unique_discipline and data[i]['beginLesson'] not in unique_begin:
 
+                    # Добавляем в конец списка уникальный str из data[i]['discipline'] в список unique_discipline
                     unique_discipline.append(data[i]['discipline'])
-                    unique_auditorium.append(data[i]['auditorium'])
+                    unique_begin.append(data[i]['auditorium'])
                     # Ничего умнее я не придумал)
                     # Суббота (09.12.2023)
-                    jsondate = f"{data[i]['dayOfWeekString']} (<b>{data[i]['date']}</b>)"
+                    jsondate = f"{data[i]['dayOfWeekString']} (<b>{data[i]['date']}</b>)\n"
                     # ⏱️ | 10:30 - 11:50
-                    beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                    beginLesson = f"\n⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
                     # Методы принятия управленческих решений (Лек)
                     discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
                     # 219(п) - Ф.И.О
-                    auditorium = f"\n{data[i]['auditorium']} - {data[i]['lecturer']}"
+                    auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}\n"
 
-                    text.append(jsondate)
+                    
                     text.append(beginLesson)
                     text.append(discipline)
                     text.append(auditorium)
 
                     print(unique_discipline[-1])
-                    print(unique_auditorium[-1])
+                    print(unique_begin[-1])
                 else:
-                    if data[i]['auditorium'] not in unique_auditorium:
 
-                        # ⏱️ | 10:30 - 11:50
-                        beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
-                        # Методы принятия управленческих решений (Лек)
-                        discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
-                        # добавить препод
-                        auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
+                    # ⏱️ | 10:30 - 11:50
+                    # beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                    # Методы принятия управленческих решений (Лек)
+                    # discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
+                    # добавить препод
+                    auditori = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
 
-                        text.append(beginLesson)
-                        text.append(discipline)
-                        text.append(auditorium)
+                    text.append(auditori)
                 i += 1
                 text = ', \n'.join(text)
-            return f"""{text}"""
+            return f"""{jsondate} {text}"""
         except JSONDecodeError:
             print('Ответ не удалось обработать')
     else:
@@ -139,11 +137,9 @@ def get_day_schedule(user_id: int, date):
                         # Методы принятия управленческих решений (Лек)
                         # discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
                         # добавить препод
-                        auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
+                        auditori = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
 
-                        text.append(beginLesson)
-                        text.append(discipline)
-                        text.append(auditorium)
+                        text.append(auditori)
                     # Как только прошли весь цикл for добавляем 1 к переменной i
                     i += 1
                     # TODO: Добавить вывод в return
