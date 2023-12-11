@@ -113,13 +113,13 @@ def get_day_schedule(user_id: int, date):
                         # Суббота (09.12.2023)
                         jsondate = f"{data[i]['dayOfWeekString']} (<b>{data[i]['date']}</b>)\n"
                         # ⏱️ | 10:30 - 11:50
-                        beginLesson = f"⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                        beginLesson = f"\n⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
                         # Методы принятия управленческих решений (Лек)
                         discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
                         # 219(п) - Ф.И.О
                         auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}\n"
 
-                        text.append(jsondate)
+                        
                         text.append(beginLesson)
                         text.append(discipline)
                         text.append(auditorium)
@@ -148,7 +148,7 @@ def get_day_schedule(user_id: int, date):
                     i += 1
                     # TODO: Добавить вывод в return
                 text = ' \n'.join(text)
-            return f"""{text}"""
+            return f"""{jsondate} {text}"""
         # Ловим ошибку если не смогли получить данные с JSONz
         except JSONDecodeError:
             print('Ответ не удалось обработать')
