@@ -13,7 +13,7 @@ class InlineMenu:
 
         builder.button(text="⚙️ настройки", callback_data=MenuCallback(act="SITING"))
 
-        builder.button(text="🏘️ группы", callback_data=MenuCallback(act="groups"))
+        builder.button(text="🏘️ группы", callback_data=MenuCallback(act="GROUPS"))
 
         builder.adjust(1, 1, 2)
         return builder.as_markup()

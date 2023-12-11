@@ -47,3 +47,7 @@ class RatingLinkFeedbackCallback(CallbackData, prefix="rating_link_feedback"):
 
 class SitingCallback(CallbackData, prefix="siting"):
     act: str
+
+
+class GroupsCallback(CallbackData, prefix="groups"):
+    act: str
