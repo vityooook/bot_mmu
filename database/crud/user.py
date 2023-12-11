@@ -5,7 +5,7 @@ from database.models import User
 
 def verify_id(user_id: int):
     with session as s:
-        stmt = s.query(User).where(User.user_id == user_id)
+        stmt = s.query(User.user_id).where(User.user_id == user_id)
         return stmt.scalar()
 
 

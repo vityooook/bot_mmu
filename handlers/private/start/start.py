@@ -11,7 +11,7 @@ from utils.filters import ChatTypeFilter
 router = Router()
 
 
-class Userinfo(StatesGroup):
+class UserInfo(StatesGroup):
     user_group = State()
 
 
@@ -26,11 +26,11 @@ async def cmd_start_handler(msg: Message, state: FSMContext):
         await msg.answer(
             "Приветик, это бот от университета МЯУ, который может скинуть расписание!"
         )
-        await state.set_state(Userinfo.user_group)
+        await state.set_state(UserInfo.user_group)
         await msg.answer("Напищи название твоей группы (пример: ЭКН11-1)")
 
 
-@router.message(Userinfo.user_group)
+@router.message(UserInfo.user_group)
 async def process_user_group(msg: Message, state: FSMContext):
     if crud.group.verify_group(msg.text.upper()):
         await state.clear()

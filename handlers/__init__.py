@@ -10,6 +10,7 @@ def get_handlers_router() -> Router:
     from .private.rating import rating_call_menu
     from .private.rating import teacher_rating
     from .private.rating import rating_feedback
+    from .private.siting import siting
     router = Router()
 
     router.include_router(start.router)
@@ -20,5 +21,6 @@ def get_handlers_router() -> Router:
     router.include_router(rating_call_menu.router)
     router.include_router(teacher_rating.router)
     router.include_router(rating_feedback.router)
+    router.include_router(siting.router)
 
     return router

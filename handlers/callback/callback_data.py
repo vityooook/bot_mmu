@@ -43,3 +43,7 @@ class RatingFeedbackCallback(CallbackData, prefix="rating_feedback"):
 class RatingLinkFeedbackCallback(CallbackData, prefix="rating_link_feedback"):
     act: str
     teacher_id: int
+
+
+class SitingCallback(CallbackData, prefix="siting"):
+    act: str

@@ -11,7 +11,7 @@ class InlineMenu:
 
         builder.button(text="👨‍🏫 рейтинг", callback_data=MenuCallback(act="RATING"))
 
-        builder.button(text="⚙️ настройки", callback_data=MenuCallback(act="settings"))
+        builder.button(text="⚙️ настройки", callback_data=MenuCallback(act="SITING"))
 
         builder.button(text="🏘️ группы", callback_data=MenuCallback(act="groups"))
 

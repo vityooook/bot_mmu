@@ -67,6 +67,5 @@ def register_models_database():
 
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
-    from database.crud.rating import verify_teacher, get_avg_rating
-    print(get_avg_rating(52))
-    print(verify_teacher("Твердова Татьяна Викторовна"))
+    from database.crud.group import update_group
+    update_group(user_id=416881515, group_id=37)
