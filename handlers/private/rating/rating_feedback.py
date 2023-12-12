@@ -23,7 +23,10 @@ class TeacherFeedback(StatesGroup):
 
 @router.callback_query(RatingMenuCallback.filter(F.act == "LEAVE-FEEDBACK"))
 async def see_rating(query: CallbackQuery, state: FSMContext):
-    await query.message.edit_text("напиши фио преподователя")
+    await query.message.edit_text(
+        "<b>Пожалуйста, напиши ФИО преподавателя.</b>"
+        "<i>\n\nДля отмены вызови меню, нажав на соответствующую кнопку.</i>"
+    )
     await state.set_state(TeacherFeedback.name)
 
 
