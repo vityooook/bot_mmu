@@ -28,6 +28,7 @@ def get_teacher_subject(teacher_id: int):
         stmt = s.query(Teacher.subject).where(Teacher.teacher_id == teacher_id)
         return stmt.scalar()
 
+
 def get_rating(teacher_id: int):
     """
     SELECT quality.quality AS quality_quality, round(avg(rating.mark), 1) AS round_1
