@@ -1,13 +1,15 @@
-import logging
+import sys
+from loguru import logger
+
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
 import config
 
-logging.basicConfig(format=u'%(filename)s:%(lineno)-d #%(levelname)-16s [%(asctime)s] %(message)s',
-                    level=logging.INFO)
+logger.add("log_{time}.log", rotation="1 week", compression="zip")
+logger.add(sys.stderr, format="{time} {level} {message}", level="INFO")
 
-storage = MemoryStorage()   # TODO: use redis as temporary database
+storage = MemoryStorage()  # TODO: use redis as temporary database
 bot = Bot(token=config.TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher(storage=storage)
