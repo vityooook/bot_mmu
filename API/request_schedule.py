@@ -120,6 +120,7 @@ def get_day_schedule(user_id: int, date):
     else:
         logger.error(f"Ошибка: {response.status_code}")
 
+
 @logger.catch()
 def data_changing(date):
     date_week = datetime.date.weekday(date)
