@@ -43,10 +43,9 @@ async def get_rating(teacher_id: int):
     async with session() as s:
         stmt = select(Quality.quality, func.round(func.avg(Rating.mark), 1)).\
             select_from(Rating).join(Quality, Quality.quality_id == Rating.quality_id).\
-            group_by(Rating.quality_id).where(Rating.teacher_id == teacher_id)
+            group_by(Quality.quality).where(Rating.teacher_id == teacher_id)
         result = await s.execute(stmt)
         return result.all()
-
 
 async def get_avg_rating(teacher_id: int):
     """

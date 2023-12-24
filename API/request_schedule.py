@@ -84,6 +84,7 @@ async def get_day_schedule(user_id: int, date):
             data = response.json()
             if not data:
                 text = "Пар нет! кайф"
+                return text
             else:
                 unique_discipline = []
                 unique_begin = []
@@ -115,7 +116,7 @@ async def get_day_schedule(user_id: int, date):
                         text.append(auditori)
                     i += 1
                 text = " \n".join(text)
-            return f"""{jsondate} {text}"""
+                return f"""{jsondate} {text}"""
         except JSONDecodeError as eror:
             logger.exception(f"Ошибка декодирования JSON {eror}")
     else:

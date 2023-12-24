@@ -84,7 +84,7 @@ async def process_second_schedule(
         callback_data=callback_data
     )
     if selected:
-        data = get_day_schedule(user_id=query.from_user.id, date=date_for_schedule)
+        data = await get_day_schedule(user_id=query.from_user.id, date=date_for_schedule)
         await query.message.edit_text(
             data,
             reply_markup=await SecondMenuSchedule().menu(date=date_for_schedule)
