@@ -3,7 +3,7 @@ import asyncio
 
 from loader import dp, bot
 from services import set_default_commands
-from database import proceed_schemas
+# from database import proceed_schemas
 
 from handlers import get_handlers_router
 

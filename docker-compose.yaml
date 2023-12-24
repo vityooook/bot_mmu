@@ -9,7 +9,7 @@ services:
       - ./mmu_db_init.sql:/docker-entrypoint-initdb.d/mmu_db_init.sql
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5442:5442"
     env_file:
       - ./.env
   pgadmin:
@@ -25,7 +25,7 @@ services:
   bot:
     build: .
     command:
-      - sh -c "python -m main_tg.py"
+      - sh -c "python -m /app/main_tg.py"
     env_file:
       - ./.env
     restart: always

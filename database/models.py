@@ -12,8 +12,8 @@ class User(Base):
     # обозначаем сталбцы
     user_id: Mapped[int] = mapped_column(primary_key=True)
     group_id: Mapped[int] = mapped_column(ForeignKey("groups.group_id"))
-    first_name: Mapped[str] = mapped_column()
-    last_name: Mapped[str] = mapped_column()
+    first_name: Mapped[str] = mapped_column(nullable=False)
+    last_name: Mapped[str] = mapped_column(nullable=False)
     username: Mapped[str] = mapped_column()
 
 

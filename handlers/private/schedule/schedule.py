@@ -40,7 +40,7 @@ async def process_first_schedule(
     )
 
     if selected == "TODAY" or selected == "TOMORROW":
-        data = get_day_schedule(user_id=query.from_user.id, date=date_for_schedule)
+        data = await get_day_schedule(user_id=query.from_user.id, date=date_for_schedule)
         await query.message.edit_text(
             data,
             reply_markup=await SecondMenuSchedule().menu(date=date_for_schedule)
