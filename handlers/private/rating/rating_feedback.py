@@ -32,11 +32,11 @@ async def see_rating(query: CallbackQuery, state: FSMContext):
 @router.message(TeacherFeedback.name)
 async def process_selecting_teacher(msg: Message, state: FSMContext):
     # получаем id преподователя, достаем фио из состояния
-    teacher_id = crud.rating.verify_teacher(msg.text.title())
+    teacher_id = await crud.rating.verify_teacher(msg.text.title())
     # если teacher_id = None, то фио не правильное
     if teacher_id:
         # проверяем оставлял ли юзер уже отзыв о это преподователе
-        if not crud.rating.verify_feedback(
+        if not await crud.rating.verify_feedback(
                 user_id=msg.from_user.id,
                 teacher_id=teacher_id
         ):
@@ -61,11 +61,11 @@ async def link_to_feedback(
 ):
     # мы ловим callbakc из teacher_rating
     # проверяем оставлял ли юзер отзыв об преподователе
-    if not crud.rating.verify_feedback(
+    if not await crud.rating.verify_feedback(
             user_id=query.from_user.id,
             teacher_id=callback_data.teacher_id
     ):
-        teacher_name = crud.rating.get_teacher_name(callback_data.teacher_id)
+        teacher_name = await crud.rating.get_teacher_name(callback_data.teacher_id)
         await state.update_data(
             name=teacher_name,
             id=callback_data.teacher_id
@@ -111,7 +111,7 @@ async def process_feedback(
         # добовляем последний ответ
         marks.append(mark_data)
         # добовляем ответы в дб
-        crud.rating.add_rating(
+        await crud.rating.add_rating(
             teacher_id=teacher_data["id"],
             user_id=query.from_user.id,
             marks=marks

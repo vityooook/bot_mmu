@@ -29,7 +29,7 @@ async def start_group(message: Message, state: FSMContext):
                 ChatTypeFilter(chat_type=["group", "supergroup"]), 
                 IsAdmin(admin=True))
 async def set_group(message: Message, state: FSMContext):
-    if crud.group.verify_group(message.text.upper()):
+    if await crud.group.verify_group(message.text.upper()):
         
         crud.chat.add_chat_info(message.chat.id, message.from_user.id, message.text.upper())
         await message.answer("спасибо, все супер\nтеперь ты можешь получить расписание")

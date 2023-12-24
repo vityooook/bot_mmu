@@ -32,10 +32,10 @@ async def changing_group(query: CallbackQuery, state: FSMContext):
 
 @router.message(UserChangeInfo.user_group)
 async def process_user_group(msg: Message, state: FSMContext):
-    group_id = crud.group.verify_group(msg.text.upper())
+    group_id = await crud.group.verify_group(msg.text.upper())
     if group_id:
         await state.clear()
-        crud.group.update_group(user_id=msg.from_user.id, group_id=group_id)
+        await crud.group.update_group(user_id=msg.from_user.id, group_id=group_id)
         await msg.answer(
             "😼 группу поменяли 😼"
             "\n\n<b>Выберите нужное действие: </b> ",

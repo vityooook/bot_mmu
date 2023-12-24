@@ -7,10 +7,10 @@ import requests
 
 
 @logger.catch()
-def get_week_schedule(user_id: int, date):
+async def get_week_schedule(user_id: int, date):
     logger.info("Получаем расписание на неделю")
     # get group id for API
-    group_id = user.get_user_group_id(user_id)
+    group_id = await user.get_user_group_id(user_id)
 
     # find first day and last day of week for API
     date_monday_unclean, date_sunday_unclean = data_changing(date)
@@ -61,11 +61,12 @@ def get_week_schedule(user_id: int, date):
     else:
         logger.error(f"Сайт не доступен статус кода: {response.status_code}")
 
+
 @logger.catch()
-def get_day_schedule(user_id: int, date):
+async def get_day_schedule(user_id: int, date):
     logger.info("Получаем расписание на день")
     # get group id for API
-    group_id = user.get_user_group_id(user_id)
+    group_id = await user.get_user_group_id(user_id)
 
     # find first day and last day of week for API
     date_str = datetime.date.strftime(date, "%Y.%m.%d")

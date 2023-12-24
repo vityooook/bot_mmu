@@ -1,2 +1,2 @@
-from database.models import register_models_database
-# from database import crud
+# from database.engine import proceed_schemas
+from database import models

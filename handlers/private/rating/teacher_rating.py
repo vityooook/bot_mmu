@@ -26,14 +26,14 @@ async def see_rating(query: CallbackQuery, state: FSMContext):
 @router.message(Teacher.name)
 async def process_selecting_teacher(msg: Message, state: FSMContext):
     # получаем id преподователя, достаем фио из состояния
-    teacher_id = crud.rating.verify_teacher(msg.text.title())
+    teacher_id = await crud.rating.verify_teacher(msg.text.title())
     # если teacher_id = None, то фио не правильное
     if teacher_id:
         await state.clear()
         teacher_name = msg.text.title()
-        teacher_subject = crud.rating.get_teacher_subject(teacher_id)
-        rating = crud.rating.get_rating(teacher_id)
-        rating_avg = crud.rating.get_avg_rating(teacher_id)
+        teacher_subject = await crud.rating.get_teacher_subject(teacher_id)
+        rating = await crud.rating.get_rating(teacher_id)
+        rating_avg = await crud.rating.get_avg_rating(teacher_id)
         # если rating = None, то отзывов нету
         if rating:
             await msg.answer(

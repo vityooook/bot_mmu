@@ -17,7 +17,7 @@ class UserInfo(StatesGroup):
 
 @router.message(CommandStart(), ChatTypeFilter("private"))
 async def cmd_start_handler(msg: Message, state: FSMContext):
-    if crud.user.verify_id(msg.from_user.id):
+    if await crud.user.verify_id(msg.from_user.id):
         await msg.answer(
             f"Приветик,{msg.from_user.first_name}, давно не виделись",
             reply_markup=menu_reply()
@@ -32,13 +32,17 @@ async def cmd_start_handler(msg: Message, state: FSMContext):
 
 @router.message(UserInfo.user_group)
 async def process_user_group(msg: Message, state: FSMContext):
-    if crud.group.verify_group(msg.text.upper()):
+    if await crud.group.verify_group(msg.text.upper()):
         await state.clear()
-        group_id = crud.group.verify_group(msg.text.upper())
+        group_id = await crud.group.verify_group(msg.text.upper())
         info = msg.from_user
-        crud.user.add_user_info(info.id, group_id,
-                                info.first_name, info.last_name,
-                                info.username)
+        await crud.user.add_user_info(
+            info.id,
+            group_id,
+            info.first_name,
+            info.last_name,
+            info.username
+        )
         await msg.answer("спасибо, все супер\nтеперь ты можешь получить расписание",
                          reply_markup=menu_reply())
         await state.clear()
