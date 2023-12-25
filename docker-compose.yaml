@@ -23,9 +23,8 @@ services:
     depends_on:
       - database
   bot:
-    build: .
-    command:
-      - sh -c "python -m /app/main_tg.py"
+    build: Dockerfile
+    command: sh -c "python3 -u main_tg.py"
     env_file:
       - ./.env
     restart: always

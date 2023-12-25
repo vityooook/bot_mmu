@@ -65,62 +65,50 @@ async def get_week_schedule(user_id: int, date):
 @logger.catch()
 async def get_day_schedule(user_id: int, date):
     logger.info("Получаем расписание на день")
-    # get group id for API
     group_id = await user.get_user_group_id(user_id)
 
-    # find first day and last day of week for API
-    date_str = datetime.date.strftime(date, "%Y.%m.%d")
+    date_str = date.strftime("%Y.%m.%d")
 
-    # requests APi and get json with lessons
     response = requests.get(
         f"https://mmu2021:mmu2021@schedule.mi.university/api/schedule/group/"
         f"{group_id}?start={date_str}&finish={date_str}&lng=1"
     )
-    # Проверка статуса ответа от сайта
+
     if response.status_code == 200:
-        # Блок try так же ловим ошибки
         try:
-            # Применяем содержимое JSON в data
             data = response.json()
             if not data:
                 text = "Пар нет! кайф"
                 return text
             else:
-                unique_discipline = []
-                unique_begin = []
+                unique_combinations = set()
                 text = []
-                i = 0
-                for _ in data:
-                    if (
-                        data[i]["discipline"] not in unique_discipline
-                        and data[i]["beginLesson"] not in unique_begin
-                    ):
-                        unique_discipline.append(data[i]["discipline"])
-                        unique_begin.append(data[i]["beginLesson"])
+                for entry in data:
+                    combination = (entry["discipline"], entry["beginLesson"])
+                    if combination not in unique_combinations:
+                        unique_combinations.add(combination)
 
-                        jsondate = (
-                            f"{data[i]['dayOfWeekString']} (<b>{data[i]['date']}</b>)\n"
+                        json_date = (
+                            f"{entry['dayOfWeekString']} (<b>{entry['date']}</b>)\n"
                         )
-                        beginLesson = (
-                            f"\n⏱| {data[i]['beginLesson']} - {data[i]['endLesson']}"
+                        begin_lesson = (
+                            f"\n⏱| {entry['beginLesson']} - {entry['endLesson']}"
                         )
-                        discipline = f"<b>{data[i]['discipline']}</b> ({data[i]['kindOfWork'][0:3:]})"
-                        auditorium = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
+                        discipline = f"<b>{entry['discipline']}</b> ({entry['kindOfWork'][0:3:]})"
+                        auditorium = f"{entry['auditorium']} - {entry['lecturer']}"
 
-                        text.append(beginLesson)
-                        text.append(discipline)
-                        text.append(auditorium)
+                        text.extend([begin_lesson, discipline, auditorium])
                     else:
-                        auditori = f"{data[i]['auditorium']} - {data[i]['lecturer']}"
+                        auditorium_info = f"{entry['auditorium']} - {entry['lecturer']}"
+                        text.append(auditorium_info)
 
-                        text.append(auditori)
-                    i += 1
                 text = " \n".join(text)
-                return f"""{jsondate} {text}"""
-        except JSONDecodeError as eror:
-            logger.exception(f"Ошибка декодирования JSON {eror}")
+                return f"{json_date} {text}"
+        except JSONDecodeError as error:
+            logger.exception(f"Ошибка декодирования JSON {error}")
     else:
         logger.error(f"Ошибка: {response.status_code}")
+
 
 
 @logger.catch()
