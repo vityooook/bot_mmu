@@ -20,9 +20,9 @@ async def main():
     await dp.start_polling(bot)
 
 
-@logger.catch()
-async def setup_taskiq():
-    await app_celery.worker_main(["-A", "celery_queue.tasks", "worker", "-B"])
+# @logger.catch()
+# async def setup_taskiq():
+#     await app_celery.worker_main(["-A", "celery_queue.tasks", "worker", "-B"])
 
 
 if __name__ == "__main__":

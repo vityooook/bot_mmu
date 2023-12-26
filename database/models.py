@@ -1,5 +1,3 @@
-import asyncio
-
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import ForeignKey
 
@@ -12,9 +10,9 @@ class User(Base):
     # обозначаем сталбцы
     user_id: Mapped[int] = mapped_column(primary_key=True)
     group_id: Mapped[int] = mapped_column(ForeignKey("groups.group_id"))
-    first_name: Mapped[str] = mapped_column(nullable=False)
-    last_name: Mapped[str] = mapped_column(nullable=False)
-    username: Mapped[str] = mapped_column()
+    first_name: Mapped[str] = mapped_column(nullable=True)
+    last_name: Mapped[str] = mapped_column(nullable=True)
+    username: Mapped[str] = mapped_column(nullable=False)
 
 
 class Group(Base):
@@ -56,4 +54,3 @@ class Squad(Base):
     chat_id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column()
     # time_schedule: Mapped[str] = mapped_column()
-
