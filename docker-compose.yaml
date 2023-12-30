@@ -1,35 +1,34 @@
 version: "3.8"
 
 services:
-  database:
-    container_name: PostgreSQL
+  postgres:
     image: postgres:16
     restart: on-failure
     volumes:
-      - ./mmu_db_init.sql:/docker-entrypoint-initdb.d/mmu_db_init.sql
       - pgdata:/var/lib/postgresql/data
+      - ./mmu_db_init.sql:/docker-entrypoint-initdb.d/mmu_db_init.sql
     ports:
-      - "5442:5442"
+      - "5442:5452"
     env_file:
       - ./.env
-  pgadmin:
-    container_name: pgAdmin
-    image: dpage/pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=vityooook@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=v15122003
-    ports:
-      - "5050:80"
-    depends_on:
-      - database
+#  pgadmin:
+#    container_name: pgAdmin
+#    image: dpage/pgadmin4
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=vityooook@gmail.com
+#      - PGADMIN_DEFAULT_PASSWORD=v15122003
+#    ports:
+#      - "5050:80"
+#    depends_on:
+#      - postgres
   bot:
-    build: Dockerfile
-    command: sh -c "python3 -u main_tg.py"
+    build: .
+    command: sh -c "python -m main_tg"
     env_file:
       - ./.env
     restart: always
     depends_on:
-      - database
+      - postgres
 
 
 volumes:

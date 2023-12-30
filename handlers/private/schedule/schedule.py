@@ -13,14 +13,13 @@ from keyboard.inline.schedule.inline_first_menu import FirstMenuSchedule
 from keyboard.inline.schedule.inline_second_menu import SecondMenuSchedule
 from keyboard.inline.schedule.inline_calendar import Calendar
 
-
 router = Router()
 
 
 @router.callback_query(MenuCallback.filter(F.act == "schedule"))
 async def schedule(
         query: CallbackQuery,
-        ):
+):
     # call a menu with inline keyboard
     await query.message.edit_text(text="<b>меню расписания:</b>",
                                   reply_markup=await FirstMenuSchedule().menu()
@@ -31,7 +30,7 @@ async def schedule(
 async def process_first_schedule(
         query: CallbackQuery,
         callback_data: ScheduleFirstMenuCallback
-        ):
+):
     await query.message.edit_text("мур мур...")
     # catch callback data from menu
     selected, date_for_schedule = await FirstMenuSchedule().process_selection_menu(
@@ -66,7 +65,7 @@ async def process_calendar(query: CallbackQuery, callback_data: ScheduleCalendar
         callback_data=callback_data
     )
     if selected:
-        data = get_day_schedule(user_id=query.from_user.id, date=date_for_schedule)
+        data = await get_day_schedule(user_id=query.from_user.id, date=date_for_schedule)
         await query.message.edit_text(
             data,
             reply_markup=await SecondMenuSchedule().menu(date=date_for_schedule)
@@ -93,4 +92,4 @@ async def process_second_schedule(
         await query.message.edit_text(
             text="<b>меню расписания:</b>",
             reply_markup=await FirstMenuSchedule().menu()
-            )
+        )

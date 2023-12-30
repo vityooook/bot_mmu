@@ -11,5 +11,5 @@ logger.add("log_{time}.log", rotation="1 week", compression="zip")
 logger.add(sys.stderr, format="{time} {level} {message}", level="INFO")
 
 storage = MemoryStorage()  # TODO: use redis as temporary database
-bot = Bot(token=config.TOKEN, parse_mode=ParseMode.HTML)
+bot = Bot(token=config.BOT_TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher(storage=storage)
