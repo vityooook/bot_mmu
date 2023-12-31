@@ -14,6 +14,7 @@ Base = declarative_base()
 #         await conn.run_sync(Base.metadata.create_all)
 
 # if __name__ == "__main__":
+#     import asyncio
 #     from database.crud.rating import get_rating
 #
 #     async def smth():
