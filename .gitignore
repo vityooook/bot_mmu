@@ -156,3 +156,5 @@ cython_debug/
 .idea
 .ruff_cache
 eggs
+
+schedule.db

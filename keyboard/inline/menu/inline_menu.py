@@ -9,11 +9,11 @@ class InlineMenu:
 
         builder.button(text="📅 расписание", callback_data=MenuCallback(act="schedule"))
 
-        builder.button(text="👨‍🏫 рейтинг", callback_data=MenuCallback(act="teacher_rating"))
+        builder.button(text="👨‍🏫 рейтинг", callback_data=MenuCallback(act="RATING"))
 
-        builder.button(text="⚙️ настройки", callback_data=MenuCallback(act="settings"))
+        builder.button(text="⚙️ настройки", callback_data=MenuCallback(act="SITING"))
 
-        builder.button(text="🏘️ группы", callback_data=MenuCallback(act="groups"))
+        builder.button(text="🏘️ группы", callback_data=MenuCallback(act="GROUPS"))
 
         builder.adjust(1, 1, 2)
         return builder.as_markup()
