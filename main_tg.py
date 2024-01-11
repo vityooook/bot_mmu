@@ -16,8 +16,8 @@ async def main():
 
     # await proceed_schemas()
 
-    logger.debug("Bot started!")
     await dp.start_polling(bot)
+    logger.debug("Bot started!")
 
 
 # @logger.catch()

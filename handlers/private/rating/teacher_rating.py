@@ -2,6 +2,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+from loguru import logger
 
 from keyboard.inline.rating.inline_link_back_rating import InlineLinkBackRating
 from handlers.callback.callback_data import RatingMenuCallback
@@ -14,6 +15,7 @@ class Teacher(StatesGroup):
     name = State()
 
 
+@logger.catch()
 @router.callback_query(RatingMenuCallback.filter(F.act == "SEE-RATING"))
 async def see_rating(query: CallbackQuery, state: FSMContext):
     # получаем callback из inline_menu_rating
@@ -23,6 +25,7 @@ async def see_rating(query: CallbackQuery, state: FSMContext):
     await state.set_state(Teacher.name)
 
 
+@logger.catch()
 @router.message(Teacher.name)
 async def process_selecting_teacher(msg: Message, state: FSMContext):
     # получаем id преподователя, достаем фио из состояния

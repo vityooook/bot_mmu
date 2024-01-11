@@ -1,5 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
+from loguru import logger
 
 from handlers.callback.callback_data import (
     MenuCallback,
@@ -12,8 +13,10 @@ from keyboard.inline.menu.inline_menu import InlineMenu
 router = Router()
 
 
+@logger.catch()
 @router.callback_query(MenuCallback.filter(F.act == "RATING"))
 async def teacher_rating(query: CallbackQuery):
+    logger.info("Ratings menu is called up")
     # получаем callback из основного меню
     await query.message.edit_text(
         text="🌟 <b>Рейтинг преподавателей</b> 🌟",
@@ -21,6 +24,7 @@ async def teacher_rating(query: CallbackQuery):
     )
 
 
+@logger.catch()
 @router.callback_query(RatingLinkFeedbackCallback.filter(F.act == "BACK"))
 async def back_from_teacher_rating(query: CallbackQuery):
     await query.message.edit_text(
@@ -29,6 +33,7 @@ async def back_from_teacher_rating(query: CallbackQuery):
     )
 
 
+@logger.catch()
 @router.callback_query(RatingMenuCallback.filter(F.act == "BACK"))
 async def back_to_main_menu(query: CallbackQuery):
     # возрат в основное меню

@@ -3,6 +3,7 @@ from aiogram.types import Message
 from aiogram.filters.command import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+from loguru import logger
 
 from keyboard.default.reply_menu import menu_reply
 from database import crud
@@ -15,8 +16,10 @@ class UserInfo(StatesGroup):
     user_group = State()
 
 
+@logger.catch()
 @router.message(CommandStart(), ChatTypeFilter("private"))
 async def cmd_start_handler(msg: Message, state: FSMContext):
+    logger.info("command /start")
     if await crud.user.verify_id(msg.from_user.id):
         await msg.answer(
             f"Приветик,{msg.from_user.first_name}, давно не виделись",
@@ -30,6 +33,7 @@ async def cmd_start_handler(msg: Message, state: FSMContext):
         await msg.answer("Напищи название твоей группы (пример: ЭКН11-1)")
 
 
+@logger.catch()
 @router.message(UserInfo.user_group)
 async def process_user_group(msg: Message, state: FSMContext):
     if await crud.group.verify_group(msg.text.upper()):

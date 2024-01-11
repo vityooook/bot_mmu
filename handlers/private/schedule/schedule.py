@@ -1,5 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
+from loguru import logger
 
 from API.request_schedule import get_day_schedule
 from keyboard.inline.menu.inline_menu import InlineMenu
@@ -16,16 +17,19 @@ from keyboard.inline.schedule.inline_calendar import Calendar
 router = Router()
 
 
+@logger.catch()
 @router.callback_query(MenuCallback.filter(F.act == "schedule"))
 async def schedule(
         query: CallbackQuery,
 ):
+    logger.info("Schedule menu is called")
     # call a menu with inline keyboard
     await query.message.edit_text(text="<b>меню расписания:</b>",
                                   reply_markup=await FirstMenuSchedule().menu()
                                   )
 
 
+@logger.catch()
 @router.callback_query(ScheduleFirstMenuCallback.filter())
 async def process_first_schedule(
         query: CallbackQuery,
@@ -57,6 +61,7 @@ async def process_first_schedule(
         )
 
 
+@logger.catch()
 @router.callback_query(ScheduleCalendarCallback.filter())
 async def process_calendar(query: CallbackQuery, callback_data: ScheduleCalendarCallback):
     await query.message.edit_text("мур мур...")
@@ -72,6 +77,7 @@ async def process_calendar(query: CallbackQuery, callback_data: ScheduleCalendar
         )
 
 
+@logger.catch()
 @router.callback_query(ScheduleSecondMenuCallback.filter())
 async def process_second_schedule(
         query: CallbackQuery,

@@ -8,7 +8,6 @@ import requests
 
 @logger.catch()
 async def get_week_schedule(user_id: int, date):
-    logger.info("Получаем расписание на неделю")
     # get group id for API
     group_id = await user.get_user_group_id(user_id)
 
@@ -64,7 +63,6 @@ async def get_week_schedule(user_id: int, date):
 
 @logger.catch()
 async def get_day_schedule(user_id: int, date):
-    logger.info("Получаем расписание на день")
     group_id = await user.get_user_group_id(user_id)
 
     date_str = date.strftime("%Y.%m.%d")
