@@ -10,14 +10,15 @@ from handlers import get_handlers_router
 
 @logger.catch()
 async def main():
-    dp.include_router(get_handlers_router())
-    await set_default_commands(dp)
-    await bot.delete_webhook(drop_pending_updates=True)
-
+    async with bot.session:
+        dp.include_router(get_handlers_router())
+        await set_default_commands(dp)
+        await bot.delete_webhook(drop_pending_updates=True)
     # await proceed_schemas()
+        logger.debug("Bot started!")
+        await dp.start_polling(bot)
 
-    await dp.start_polling(bot)
-    logger.debug("Bot started!")
+
 
 
 # @logger.catch()

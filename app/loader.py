@@ -1,4 +1,3 @@
-import sys
 from loguru import logger
 
 from aiogram import Bot, Dispatcher
@@ -11,7 +10,7 @@ logger.add(
     "logs/log_{time}.log",
     format="{time} {level} {message}",
     level="INFO",
-    rotation="1 week",
+    rotation="1 day",
     compression="zip"
 )
 

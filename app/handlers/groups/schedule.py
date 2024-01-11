@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters.command import Command
 
-from utils.filters import ChatTypeFilter
+from app.utils.filters import ChatTypeFilter
 from database import crud
 
 

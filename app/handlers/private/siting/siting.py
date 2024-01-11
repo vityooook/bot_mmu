@@ -9,7 +9,6 @@ from loguru import logger
 from handlers.callback.callback_data import MenuCallback, SitingCallback
 from keyboard.inline.menu.inline_menu import InlineMenu
 from keyboard.inline.siting.inline_siting import InlineSiting
-from database import crud
 
 router = Router()
 
@@ -38,10 +37,10 @@ async def changing_group(query: CallbackQuery, state: FSMContext):
 @logger.catch()
 @router.message(UserChangeInfo.user_group)
 async def process_user_group(msg: Message, state: FSMContext):
-    group_id = await crud.group.verify_group(msg.text.upper())
+    group_id = await str.database.crud.group.verify_group(msg.text.upper())
     if group_id:
         await state.clear()
-        await crud.group.update_group(user_id=msg.from_user.id, group_id=group_id)
+        await str.database.crud.group.update_group(user_id=msg.from_user.id, group_id=group_id)
         await msg.answer(
             "😼 группу поменяли 😼"
             "\n\n<b>Выберите нужное действие: </b> ",
