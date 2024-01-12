@@ -8,6 +8,7 @@ def get_handlers_router() -> Router:
     from .private.schedule import get_schedule_router
     from .private.groups import get_groups_router
     from .private.siting import get_siting_router
+    from .private.admin import get_admin_router
 
     router = Router()
 
@@ -17,6 +18,7 @@ def get_handlers_router() -> Router:
     schedule_router = get_schedule_router()
     groups_router = get_groups_router()
     siting_router = get_siting_router()
+    admin_router = get_admin_router()
 
     router.include_router(start_router)
     router.include_router(menu_router)
@@ -24,6 +26,7 @@ def get_handlers_router() -> Router:
     router.include_router(schedule_router)
     router.include_router(groups_router)
     router.include_router(siting_router)
+    router.include_router(admin_router)
 
     return router
 
