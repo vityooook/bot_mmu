@@ -2,21 +2,22 @@ from loguru import logger
 import asyncio
 
 from loader import dp, bot
+# * import default commands for menu /start
 from services import set_default_commands
-# from database import proceed_schemas
-
+# * import all routers
 from handlers import get_handlers_router
 
 
 @logger.catch()
 async def main():
-    async with bot.session:
-        dp.include_router(get_handlers_router())
-        await set_default_commands(dp)
-        await bot.delete_webhook(drop_pending_updates=True)
-    # await proceed_schemas()
-        logger.debug("Bot started!")
-        await dp.start_polling(bot)
+    # * declare all routers(handlers) in dispatcher
+    dp.include_router(get_handlers_router())
+    await set_default_commands(dp)
+    # * delete old line command
+    await bot.delete_webhook(drop_pending_updates=True)
+    logger.debug("Bot started!")
+    # * launch bot
+    await dp.start_polling(bot)
 
 
 

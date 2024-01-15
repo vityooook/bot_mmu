@@ -53,3 +53,11 @@ class SitingCallback(CallbackData, prefix="siting"):
 
 class GroupsCallback(CallbackData, prefix="groups"):
     act: str
+
+
+class AdminWithoutPhotoCallback(CallbackData, prefix="without_photo"):
+    act: str
+
+
+class AdminAcceptCallback(CallbackData, prefix="accept_admin"):
+    act: str

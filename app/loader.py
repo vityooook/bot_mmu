@@ -6,8 +6,9 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 import config
 
+# * Set up logging, declare the bot and dispatcher
 logger.add(
-    "logs/log_{time}.log",
+    "logs/logs.log",
     format="{time} {level} {message}",
     level="INFO",
     rotation="1 day",

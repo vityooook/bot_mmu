@@ -1,13 +1,13 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import ForeignKey
-
+# * import Base to declare tables
 from database.engine import Base
 
 
 class User(Base):
-    #здесь прописываем настоящее имя таблицы к которой подключаемся
+    # * real table's name for connection
     __tablename__ = "users"
-    # обозначаем сталбцы
+    # * create columns
     user_id: Mapped[int] = mapped_column(primary_key=True)
     group_id: Mapped[int] = mapped_column(ForeignKey("groups.group_id"))
     first_name: Mapped[str] = mapped_column(nullable=True)

@@ -6,8 +6,8 @@ from database.models import User
 async def verify_id(user_id: int):
     async with session() as s:
         stmt = select(User.user_id).where(User.user_id == user_id)
-        result = await s.scalar(stmt)
-        return result
+        result = await s.execute(stmt)
+        return result.scalar()
 
 
 async def add_user_info(
@@ -32,5 +32,14 @@ async def add_user_info(
 async def get_user_group_id(user_id: int) -> int:
     async with session() as s:
         stmt = select(User.group_id).where(User.user_id == user_id)
-        result = await s.scalar(stmt)
-        return result
+        result = await s.execute(stmt)
+        return result.scalar()
+
+
+async def select_all_users_id() -> list:
+    async with session() as s:
+        stmt = select(User.user_id)
+        result = await s.execute(stmt)
+        # return stmt
+        return result.all()
+
