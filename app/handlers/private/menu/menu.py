@@ -13,7 +13,7 @@ router = Router()
 @logger.catch()
 @router.message(F.text == "ℹ️ Показать меню")
 async def menu(msg: Message, state: FSMContext):
-    """ main menu
+    """Button for calling main menu
 
     :param msg: message sent by the user
     :param state: inherit fsm

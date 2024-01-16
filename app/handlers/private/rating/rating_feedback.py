@@ -4,12 +4,16 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from loguru import logger
 
+# * import inline rating menu keyboard
 from keyboard.inline.menu.inline_menu import InlineMenu
 from keyboard.inline.rating.inline_feedback import InlineFeedback
+# * import callback
 from handlers.callback.callback_data import (
     RatingMenuCallback, RatingFeedbackCallback, RatingLinkFeedbackCallback
 )
+# * import questions for survey
 from .question import question
+# * import requests to database
 from database import crud
 
 router = Router()
@@ -23,7 +27,12 @@ class TeacherFeedback(StatesGroup):
 @logger.catch()
 @router.callback_query(RatingMenuCallback.filter(F.act == "LEAVE-FEEDBACK"))
 async def see_rating(query: CallbackQuery, state: FSMContext):
-    # получаем callback из inline_menu_rating
+    """Working out a callback for leave a feedback about teacher
+
+    :param query: this object represents an incoming callback query from a callback button
+    :param state: inherit fsm
+    """
+    logger.debug("student leaves feedback")
     await query.message.edit_text(
         "<b>Пожалуйста, напиши ФИО преподавателя.</b>"
         "<i>\n\nДля отмены вызови меню, нажав на соответствующую кнопку.</i>"
@@ -34,18 +43,22 @@ async def see_rating(query: CallbackQuery, state: FSMContext):
 @logger.catch()
 @router.message(TeacherFeedback.name)
 async def process_selecting_teacher(msg: Message, state: FSMContext):
-    # получаем id преподователя, достаем фио из состояния
+    """Handling the state when the user entered teacher's name
+
+    :param msg: message sent by the user
+    :param state: inherit fsm
+    """
+    # * check if a teacher exist
     teacher_id = await crud.rating.verify_teacher(msg.text.title())
-    # если teacher_id = None, то фио не правильное
     if teacher_id:
-        # проверяем оставлял ли юзер уже отзыв о это преподователе
+        # * checking whether the student left a review about this teacher
         if not await crud.rating.verify_feedback(
                 user_id=msg.from_user.id,
                 teacher_id=teacher_id
         ):
             name = msg.text.title()
             await state.update_data(name=name, id=teacher_id)
-            # вызываем inline кнопки с вопросами
+            # * call inline keyboard with first question
             await msg.answer(
                 f"{question[0]}",
                 reply_markup=await InlineFeedback().start_feedback()
@@ -63,18 +76,24 @@ async def link_to_feedback(
         callback_data: RatingLinkFeedbackCallback,
         state: FSMContext,
 ):
-    # мы ловим callbakc из teacher_rating
-    # проверяем оставлял ли юзер отзыв об преподователе
+    """Catch callback from teacher_python.py
+
+    :param query: this object represents an incoming callback query from a callback button
+    :param callback_data: the callback with some information
+    :param state: inherit fsm
+    """
+    # * checking whether the student left a review about this teacher
     if not await crud.rating.verify_feedback(
             user_id=query.from_user.id,
             teacher_id=callback_data.teacher_id
     ):
+        # * get the teacher's name
         teacher_name = await crud.rating.get_teacher_name(callback_data.teacher_id)
         await state.update_data(
             name=teacher_name,
             id=callback_data.teacher_id
         )
-        # вызываем inline кнопки с вопросами
+        # * call inline keyboard with first question
         await query.message.edit_text(
             f"{question[0]}",
             reply_markup=await InlineFeedback().start_feedback()
@@ -93,19 +112,25 @@ async def process_feedback(
         state: FSMContext,
         marks: list = []
 ):
+    """Working out a callback for catch marks
+
+        :param query: this object represents an incoming callback query from a callback button
+        :param callback_data: the callback with some information
+        :param state: inherit fsm
+        """
     await query.message.edit_text("мур мур...")
-    # достаем ответ из callback
+    # * get the response from callback
     mark_data = await InlineFeedback().process_selection(
         query=query,
         callback_data=callback_data
     )
-    # получаем id препода из состояния
+    # * get the teacher id from state
     teacher_data = await state.get_data()
-    # делаем проверку на номер ответа
+    # * check the question number
     if mark_data["question"] != 5:
-        # добовляем ответ в сипосок
+        # * add answer to list
         marks.append(mark_data)
-        # вызываем следующий вопрос
+        # * call the next question
         await query.message.edit_text(
             f"{question[mark_data['question']]}",
             reply_markup=await InlineFeedback().start_feedback(
@@ -113,16 +138,16 @@ async def process_feedback(
             )
         )
     else:
-        # добовляем последний ответ
+        # * add last answer to list
         marks.append(mark_data)
-        # добовляем ответы в дб
+        # * add all answer to the database
         await crud.rating.add_rating(
             teacher_id=teacher_data["id"],
             user_id=query.from_user.id,
             marks=marks
         )
         marks.clear()
-        # вызываем основное меню
+        # * call main menu
         await query.message.edit_text(
             "😼 спасибо, ответы записаны 😼"
             "\n\n<b>Выберите нужное действие: </b> ",

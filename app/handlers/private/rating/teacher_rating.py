@@ -4,8 +4,11 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from loguru import logger
 
+# * import inline keyboard to return to ratings menu
 from keyboard.inline.rating.inline_link_back_rating import InlineLinkBackRating
+# * import callback
 from handlers.callback.callback_data import RatingMenuCallback
+# * import requests to database
 from database import crud
 
 router = Router()
@@ -18,7 +21,12 @@ class Teacher(StatesGroup):
 @logger.catch()
 @router.callback_query(RatingMenuCallback.filter(F.act == "SEE-RATING"))
 async def see_rating(query: CallbackQuery, state: FSMContext):
-    # получаем callback из inline_menu_rating
+    """Working out a callback for see teacher's rating
+
+    :param query: this object represents an incoming callback query from a callback button
+    :param state: inherit fsm
+    """
+    logger.debug("student looking teacher's rating")
     await query.message.edit_text(
         "<b>Пожалуйста, напиши ФИО преподавателя.</b>"
         "<i>\n\nДля отмены вызови меню, нажав на соответствующую кнопку.</i>")
@@ -28,16 +36,23 @@ async def see_rating(query: CallbackQuery, state: FSMContext):
 @logger.catch()
 @router.message(Teacher.name)
 async def process_selecting_teacher(msg: Message, state: FSMContext):
-    # получаем id преподователя, достаем фио из состояния
+    """Handling the state when the user entered teacher's name
+
+    :param msg: message sent by the user
+    :param state: inherit fsm
+    """
+    # * check if a teacher exist
     teacher_id = await crud.rating.verify_teacher(msg.text.title())
-    # если teacher_id = None, то фио не правильное
+    # * if Teacher_id = No, this is incorrect
     if teacher_id:
         await state.clear()
         teacher_name = msg.text.title()
+        # * get the teacher's qualification using id
         teacher_subject = await crud.rating.get_teacher_subject(teacher_id)
+        # * calculation the teacher's rating
         rating = await crud.rating.get_rating(teacher_id)
+        # * calculation the teacher's average rating
         rating_avg = await crud.rating.get_avg_rating(teacher_id)
-        # если rating = None, то отзывов нету
         if rating:
             await msg.answer(
                 f"<b>{teacher_name}</b>" 
