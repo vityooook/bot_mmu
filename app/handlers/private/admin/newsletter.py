@@ -29,7 +29,7 @@ class Newsletter(StatesGroup):
     photo = State()
 
 
-@logger.catch(level="INFO", message="command newsletter")
+@logger.catch()
 @router.message(Command("newsletter"))
 async def cmd_newsletter(msg: Message, state: FSMContext):
     """command /newsletter
@@ -39,6 +39,7 @@ async def cmd_newsletter(msg: Message, state: FSMContext):
 
     return:the output is several coroutines
 """
+    logger.debug("command newsletter")
     # * admin id check
     if msg.from_user.id == int(ADMIN):
         await msg.answer("напишите текст, для рассылки")
@@ -47,7 +48,7 @@ async def cmd_newsletter(msg: Message, state: FSMContext):
         await msg.answer("вы не являетесь админом")
 
 
-@logger.catch(level="INFO", message="admin send text")
+@logger.catch()
 @router.message(Newsletter.text)
 async def process_text(msg: Message, state: FSMContext):
     """Handling the state when the admin entered text
@@ -67,7 +68,7 @@ async def process_text(msg: Message, state: FSMContext):
     await state.set_state(Newsletter.photo)
 
 
-@logger.catch(level="INFO", message="admin didn't send photo")
+@logger.catch()
 @router.callback_query(AdminWithoutPhotoCallback.filter())
 async def process_without_photo(query: CallbackQuery, state: FSMContext):
     """working out a callback for a post without a photo
@@ -85,7 +86,7 @@ async def process_without_photo(query: CallbackQuery, state: FSMContext):
     )
 
 
-@logger.catch(level="INFO", message="admin send photo")
+@logger.catch()
 @router.message(Newsletter.photo)
 async def process_photo(msg: Message, state: FSMContext):
     """ receive photo from admin
@@ -104,7 +105,7 @@ async def process_photo(msg: Message, state: FSMContext):
     )
 
 
-@logger.catch(level="INFO", message="admin decision")
+@logger.catch()
 @router.callback_query(AdminAcceptCallback.filter())
 async def final_stage(
         query: CallbackQuery,
@@ -129,13 +130,14 @@ async def final_stage(
         await query.message.answer("рассылка отменина")
 
 
-@logger.catch(level="INFO", message="mailing has started")
+@logger.catch()
 async def start_newsletter(data):
     """ function for mailing
 
     :param data: the post for mailing
     :return: the output is several coroutines
     """
+    logger.debug("mailing has started")
     await bot.send_message(chat_id=ADMIN, text="рассылка началась")
     # * get all users id
     users_id = await crud.user.select_all_users_id()

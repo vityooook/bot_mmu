@@ -12,7 +12,10 @@ logger.add(
     format="{time} {level} {message}",
     level="INFO",
     rotation="1 day",
-    compression="zip"
+    compression="zip",
+    enqueue=True,
+    backtrace=False,
+    diagnose=False
 )
 
 storage = MemoryStorage()

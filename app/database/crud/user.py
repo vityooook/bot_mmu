@@ -7,13 +7,14 @@ from database.engine import session
 from database.models import User
 
 
-@logger.catch(level="INFO", message="verify a student")
+@logger.catch()
 async def verify_id(user_id: int):
     """check if a student exists
 
     :param user_id: student id in Telegram
     :return: student id in Telegram
     """
+    logger.debug("verify a student")
     async with session() as s:
         stmt = select(User.user_id).where(User.user_id == user_id)
         logger.debug(stmt)
@@ -21,7 +22,7 @@ async def verify_id(user_id: int):
         return result.scalar()
 
 
-@logger.catch(level="INFO", message="add student's information")
+@logger.catch()
 async def add_user_info(
         user_id: int,
         group_id: int,
@@ -37,6 +38,7 @@ async def add_user_info(
     :param last_name: student last_name in Telegram
     :param username: student username in Telegram
     """
+    logger.debug("add student's information")
     async with session() as s:
         stmt = User(
             user_id=user_id,
@@ -50,13 +52,14 @@ async def add_user_info(
         await s.commit()
 
 
-@logger.catch(level="INFO", message="get student group id")
+@logger.catch()
 async def get_user_group_id(user_id: int) -> int:
     """get student group id
 
     :param user_id: student id in Telegram
     :return: student group id
     """
+    logger.debug("get student group id")
     async with session() as s:
         stmt = select(User.group_id).where(User.user_id == user_id)
         logger.debug(stmt)
@@ -64,9 +67,10 @@ async def get_user_group_id(user_id: int) -> int:
         return result.scalar()
 
 
-@logger.catch(level="INFO", message="get all students id")
+@logger.catch()
 async def select_all_users_id() -> list:
     """get all students id for newsletter"""
+    logger.debug("get all students id")
     async with session() as s:
         stmt = select(User.user_id)
         result = await s.execute(stmt)

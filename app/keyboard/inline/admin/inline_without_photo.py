@@ -5,6 +5,7 @@ from handlers.callback.callback_data import AdminWithoutPhotoCallback
 
 class InlineAdmin:
     async def without_photo(self) -> InlineKeyboardMarkup:
+        """inline keyboard for sending a newsletter without a photo"""
         builder = InlineKeyboardBuilder()
 
         builder.button(

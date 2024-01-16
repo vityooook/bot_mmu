@@ -8,7 +8,7 @@ from database.engine import session
 from database.models import Quality, Teacher, Rating
 
 
-@logger.catch(level="INFO", message="verify name of teacher")
+@logger.catch()
 async def verify_teacher(name: str):
     """check if a teacher exist
 
@@ -16,6 +16,7 @@ async def verify_teacher(name: str):
 
         :return: teacher's id
         """
+    logger.debug("verify name of teacher")
     async with session() as s:
         stmt = select(Teacher.teacher_id).where(Teacher.name == name)
         logger.debug(stmt)
@@ -23,7 +24,7 @@ async def verify_teacher(name: str):
         return result.scalar()
 
 
-@logger.catch(level="INFO", message="check student's review")
+@logger.catch()
 async def verify_feedback(user_id: int, teacher_id: int):
     """checking whether the student left a review about this teacher
 
@@ -32,6 +33,7 @@ async def verify_feedback(user_id: int, teacher_id: int):
 
     :return: teacher's id from Rating table
     """
+    logger.debug("check student's review")
     async with session() as s:
         stmt = select(Rating.teacher_id) \
             .where((Rating.user_id == user_id) & (Rating.teacher_id == teacher_id)).limit(1)
@@ -40,13 +42,14 @@ async def verify_feedback(user_id: int, teacher_id: int):
         return result.scalar()
 
 
-@logger.catch(level="INFO", message="get name of teacher")
+@logger.catch()
 async def get_teacher_name(teacher_id: int):
     """get the teacher's name using id
 
     :param teacher_id: teacher's id
     :return: teacher's name
     """
+    logger.debug("get name of teacher")
     async with session() as s:
         stmt = select(Teacher.name).where(Teacher.teacher_id == teacher_id)
         logger.debug(stmt)
@@ -54,13 +57,14 @@ async def get_teacher_name(teacher_id: int):
         return result.scalar()
 
 
-@logger.catch(level="INFO", message="get qualification of teacher")
+@logger.catch()
 async def get_teacher_subject(teacher_id: int):
     """get the teacher's qualification using id
 
         :param teacher_id: teacher's id
         :return: teacher's qualification
         """
+    logger.debug("get qualification of teacher")
     async with session() as s:
         stmt = select(Teacher.subject).where(Teacher.teacher_id == teacher_id)
         logger.debug(stmt)
@@ -68,13 +72,14 @@ async def get_teacher_subject(teacher_id: int):
         return result.scalar()
 
 
-@logger.catch(level="INFO", message="get the teacher's rating")
+@logger.catch()
 async def get_rating(teacher_id: int):
     """calculation the teacher's rating
 
     :param teacher_id: teacher's id
     :return: five average ratings about the teacher
     """
+    logger.debug("get the teacher's rating")
     async with session() as s:
         stmt = select(Quality.quality, func.round(func.avg(Rating.mark), 1)).\
             select_from(Rating).join(Quality, Quality.quality_id == Rating.quality_id).\
@@ -84,13 +89,14 @@ async def get_rating(teacher_id: int):
         return result.all()
 
 
-@logger.catch(level="INFO", message="get the teacher's average rating")
+@logger.catch()
 async def get_avg_rating(teacher_id: int):
     """calculation the teacher's average rating
 
         :param teacher_id: teacher's id
         :return: one main average rating about the teacher
         """
+    logger.debug("get the teacher's average rating")
     async with session() as s:
         stmt = select(func.round(func.avg(Rating.mark), 1)).\
             where(Rating.teacher_id == teacher_id)
@@ -99,7 +105,7 @@ async def get_avg_rating(teacher_id: int):
         return result.scalar()
 
 
-@logger.catch(level="INFO", message="add reviews to the database")
+@logger.catch()
 async def add_rating(teacher_id: int, user_id: int, marks: list):
     """add reviews to the database
 
@@ -107,6 +113,7 @@ async def add_rating(teacher_id: int, user_id: int, marks: list):
     :param user_id: student id in Telegram
     :param marks: marls from one to five
     """
+    logger.debug("add reviews to the database")
     async with session() as s:
         for mark in marks:
             stmt = Rating(

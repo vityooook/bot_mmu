@@ -8,7 +8,6 @@ from services import set_default_commands
 from handlers import get_handlers_router
 
 
-@logger.catch()
 async def main():
     # * declare all routers(handlers) in dispatcher
     dp.include_router(get_handlers_router())

@@ -6,7 +6,7 @@ import requests
 from database.crud import user
 
 
-@logger.catch(level="INFO", message="getting the daily schedule")
+@logger.catch()
 async def get_day_schedule(user_id: int, date: datetime) -> str:
     """ make a request to the university's API to get the schedule for a specific day
 
@@ -16,6 +16,7 @@ async def get_day_schedule(user_id: int, date: datetime) -> str:
 
     :return: schedule for day
     """
+    logger.debug("getting the daily schedule")
     # * get user's group id
     group_id = await user.get_user_group_id(user_id)
     # * conversion from datetime format to str
@@ -68,7 +69,7 @@ async def get_day_schedule(user_id: int, date: datetime) -> str:
         logger.error(f"Ошибка: {response.status_code}")
 
 
-# this part of code not ready yet
+# * this part of code not ready yet
 @logger.catch()
 async def get_week_schedule(user_id: int, date: datetime):
     """ Make a request to the university's API to get the schedule for a week.

@@ -5,6 +5,7 @@ from handlers.callback.callback_data import GroupsCallback
 
 class InlineGroups:
     async def groups_menu(self) -> InlineKeyboardMarkup:
+        """inline keyboard for back to main menu"""
         builder = InlineKeyboardBuilder()
 
         builder.button(text="🐈‍⬛ назад", callback_data=GroupsCallback(act="BACK"))

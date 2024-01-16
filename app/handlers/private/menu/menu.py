@@ -11,9 +11,16 @@ router = Router()
 
 
 @logger.catch()
-@router.message(F.text == 'ℹ️ Показать меню')
+@router.message(F.text == "ℹ️ Показать меню")
 async def menu(msg: Message, state: FSMContext):
-    logger.info("Main menu is called")
+    """ main menu
+
+    :param msg: message sent by the user
+    :param state: inherit fsm
+    :return: the output is several coroutines
+    """
+    logger.debug("main menu is called")
+    # * cleaning all states just in case
     await state.clear()
     await msg.answer(
         "МЯУ бот создан для студентов.\n\n<b>Выберите нужное действие:</b>",

@@ -5,6 +5,7 @@ from handlers.callback.callback_data import AdminAcceptCallback
 
 class InlineAdminAccept:
     async def accept_newsletter(self) -> InlineKeyboardMarkup:
+        """inline keyboard for accepting or declining newsletter"""
         builder = InlineKeyboardBuilder()
 
         builder.button(

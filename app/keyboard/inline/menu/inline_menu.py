@@ -5,6 +5,7 @@ from handlers.callback.callback_data import MenuCallback
 
 class InlineMenu:
     async def menu(self) -> InlineKeyboardMarkup:
+        """main menu"""
         builder = InlineKeyboardBuilder()
 
         builder.button(text="📅 расписание", callback_data=MenuCallback(act="schedule"))
