@@ -4,6 +4,7 @@ from sqlalchemy import ForeignKey
 from database.engine import Base
 
 
+# * create a table in database
 class User(Base):
     # * real table's name for connection
     __tablename__ = "users"

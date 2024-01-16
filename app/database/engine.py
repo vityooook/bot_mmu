@@ -10,17 +10,12 @@ session = async_sessionmaker(engine, expire_on_commit=False)
 # * declare tables
 Base = declarative_base()
 
+# * testing requests to database
+if __name__ == "__main__":
+    import asyncio
+    from database.crud.group import verify_group
 
-# async def proceed_schemas() -> None:
-#     async with engine.begin() as conn:
-#         await conn.run_sync(Base.metadata.create_all)
+    async def smth():
+        await verify_group('sds')
 
-# if __name__ == "__main__":
-#     import asyncio
-#     from database.crud.user import select_all_users_id
-#
-#     async def smth():
-#         stmt = await select_all_users_id()
-#         print(stmt)
-#
-#     asyncio.run(smth())
+    asyncio.run(smth())
