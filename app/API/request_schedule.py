@@ -61,6 +61,7 @@ async def get_day_schedule(user_id: int, date: datetime) -> str:
                         # * if subject not uniq, add only auditorium and lecturer
                         auditorium_info = f"{entry['auditorium']} - {entry['lecturer']}"
                         text.append(auditorium_info)
+                text = " \n".join(text)
                 # * return schedule
                 return f"{json_date}\n{text}"
         except JSONDecodeError as error:

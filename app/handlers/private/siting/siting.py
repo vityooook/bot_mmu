@@ -5,10 +5,14 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from loguru import logger
 
-
+# * import callback
 from handlers.callback.callback_data import MenuCallback, SitingCallback
+# * import inline rating menu keyboard
 from keyboard.inline.menu.inline_menu import InlineMenu
+# * import inline siting menu keyboard
 from keyboard.inline.siting.inline_siting import InlineSiting
+# * import requests to database
+from database import crud
 
 router = Router()
 
@@ -20,6 +24,10 @@ class UserChangeInfo(StatesGroup):
 @logger.catch()
 @router.callback_query(MenuCallback.filter(F.act == "SITING"))
 async def siting_menu(query: CallbackQuery):
+    """Working out a callback for a call siting menu
+
+    :param query: this object represents an incoming callback query from a callback button
+    """
     logger.info("Siting menu is called")
     await query.message.edit_text(
         "настроки",
@@ -30,6 +38,11 @@ async def siting_menu(query: CallbackQuery):
 @logger.catch()
 @router.callback_query(SitingCallback.filter(F.act == "CHANGE-GROUP"))
 async def changing_group(query: CallbackQuery, state: FSMContext):
+    """Working out a callback for update student's group
+
+    :param query: this object represents an incoming callback query from a callback button
+    :param state: inherit fsm
+    """
     await state.set_state(UserChangeInfo.user_group)
     await query.message.edit_text("Напищи название твоей группы (пример: ЭКН11-1)")
 
@@ -37,10 +50,16 @@ async def changing_group(query: CallbackQuery, state: FSMContext):
 @logger.catch()
 @router.message(UserChangeInfo.user_group)
 async def process_user_group(msg: Message, state: FSMContext):
-    group_id = await str.database.crud.group.verify_group(msg.text.upper())
+    """Handling the state when the student entered group name
+
+    :param msg: message sent by the user
+    :param state: inherit fsm
+    """
+    # * check if the group exists
+    group_id = await crud.group.verify_group(msg.text.upper())
     if group_id:
         await state.clear()
-        await str.database.crud.group.update_group(user_id=msg.from_user.id, group_id=group_id)
+        await crud.group.update_group(user_id=msg.from_user.id, group_id=group_id)
         await msg.answer(
             "😼 группу поменяли 😼"
             "\n\n<b>Выберите нужное действие: </b> ",
@@ -53,6 +72,10 @@ async def process_user_group(msg: Message, state: FSMContext):
 @logger.catch()
 @router.callback_query(SitingCallback.filter(F.act == "BACK"))
 async def back_manu(query: CallbackQuery):
+    """Working out a callback for back to main menu
+
+    :param query: this object represents an incoming callback query from a callback button
+    """
     await query.message.edit_text(
         "\n\n<b>Выберите нужное действие: </b> ",
         reply_markup=await InlineMenu().menu()

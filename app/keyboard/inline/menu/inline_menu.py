@@ -8,7 +8,7 @@ class InlineMenu:
         """main menu"""
         builder = InlineKeyboardBuilder()
 
-        builder.button(text="📅 расписание", callback_data=MenuCallback(act="schedule"))
+        builder.button(text="📅 расписание", callback_data=MenuCallback(act="SCHEDULE"))
 
         builder.button(text="👨‍🏫 рейтинг", callback_data=MenuCallback(act="RATING"))
 

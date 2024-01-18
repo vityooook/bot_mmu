@@ -5,6 +5,9 @@ from handlers.callback.callback_data import SitingCallback
 
 class InlineSiting:
     async def siting_menu(self) -> InlineKeyboardMarkup:
+        """Siting menu with two button (change group, back)
+
+        """
         builder = InlineKeyboardBuilder()
 
         builder.button(text="сменить группу", callback_data=SitingCallback(act="CHANGE-GROUP"))

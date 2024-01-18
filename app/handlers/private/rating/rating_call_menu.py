@@ -18,10 +18,9 @@ router = Router()
 @logger.catch()
 @router.callback_query(MenuCallback.filter(F.act == "RATING"))
 async def teacher_rating(query: CallbackQuery):
-    """working out a callback for a call rating menu
+    """Working out a callback for a call rating menu
 
     :param query: this object represents an incoming callback query from a callback button
-    :return: the output is several coroutines
     """
     logger.debug("Ratings menu is called up")
     await query.message.edit_text(
@@ -33,10 +32,9 @@ async def teacher_rating(query: CallbackQuery):
 @logger.catch()
 @router.callback_query(RatingLinkFeedbackCallback.filter(F.act == "BACK"))
 async def back_from_teacher_rating(query: CallbackQuery):
-    """working out a callback for back to rating menu
+    """Working out a callback for back to rating menu
 
     :param query: this object represents an incoming callback query from a callback button
-    :return: the output is several coroutines
     """
     await query.message.edit_text(
         text="🌟 <b>Рейтинг преподавателей</b> 🌟",
@@ -47,10 +45,9 @@ async def back_from_teacher_rating(query: CallbackQuery):
 @logger.catch()
 @router.callback_query(RatingMenuCallback.filter(F.act == "BACK"))
 async def back_to_main_menu(query: CallbackQuery):
-    """working out a callback for back to main menu
+    """Working out a callback for back to main menu
 
     :param query: this object represents an incoming callback query from a callback button
-    :return: the output is several coroutines
     """
     await query.message.edit_text(
         "МЯУ бот создан для студентов.\n\n<b>Выберите нужное действие:</b>",

@@ -6,10 +6,8 @@ from handlers.callback.callback_data import RatingFeedbackCallback as Callback
 
 class InlineFeedback:
 
-    async def start_feedback(
-            self,
-            question: int = 1,
-    ) -> InlineKeyboardMarkup:
+    async def start_feedback(self, question: int = 1) -> InlineKeyboardMarkup:
+        """Buttons for rating teachers from 1 to 5"""
         builder = InlineKeyboardBuilder()
 
         builder.button(text="1", callback_data=Callback(act=1, question=question))
@@ -21,11 +19,8 @@ class InlineFeedback:
         builder.adjust(5)
         return builder.as_markup()
 
-    async def process_selection(
-            self,
-            query: CallbackQuery,
-            callback_data: Callback
-    ) -> dict:
+    async def process_selection(self, query: CallbackQuery, callback_data: Callback) -> dict:
+        """Catches callbacks and extracts marks and question number from them"""
         return_data = {
             "mark": int,
             "question": int

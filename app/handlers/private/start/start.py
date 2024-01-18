@@ -5,9 +5,11 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from loguru import logger
 
+# * import main menu reply keyboard
 from keyboard.default.reply_menu import menu_reply
+# * import requests to database
 from database import crud
-from utils.filters import ChatTypeFilter
+
 
 router = Router()
 
@@ -17,8 +19,13 @@ class UserInfo(StatesGroup):
 
 
 @logger.catch()
-@router.message(CommandStart(), ChatTypeFilter("private"))
+@router.message(CommandStart())
 async def cmd_start_handler(msg: Message, state: FSMContext):
+    """Launch a bot
+
+    :param msg: message sent by the user
+    :param state: inherit fsm
+    """
     logger.info("command /start")
     if await crud.user.verify_id(msg.from_user.id):
         await msg.answer(
@@ -36,10 +43,17 @@ async def cmd_start_handler(msg: Message, state: FSMContext):
 @logger.catch()
 @router.message(UserInfo.user_group)
 async def process_user_group(msg: Message, state: FSMContext):
+    """Handling the state when the student entered group name
+
+    :param msg: message sent by the user
+    :param state: inherit fsm
+    """
+    # * check if the group exist
     if await crud.group.verify_group(msg.text.upper()):
-        await state.clear()
+        # * with the same request we get the group id
         group_id = await crud.group.verify_group(msg.text.upper())
         info = msg.from_user
+        # * add information about new student
         await crud.user.add_user_info(
             info.id,
             group_id,
@@ -49,7 +63,6 @@ async def process_user_group(msg: Message, state: FSMContext):
         )
         await msg.answer("спасибо, все супер\nтеперь ты можешь получить расписание",
                          reply_markup=menu_reply())
-        await state.clear()
     else:
         await msg.answer('такой группы нету')
 

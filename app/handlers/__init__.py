@@ -2,6 +2,7 @@ from aiogram import Router
 
 
 def get_handlers_router() -> Router:
+    # * import functions with routers
     from .private.start import get_start_router
     from .private.menu import get_menu_router
     from .private.rating import get_rating_router
@@ -10,8 +11,10 @@ def get_handlers_router() -> Router:
     from .private.siting import get_siting_router
     from .private.admin import get_admin_router
 
+    # * a boss router
     router = Router()
 
+    # * made for beauty
     start_router = get_start_router()
     menu_router = get_menu_router()
     rating_router = get_rating_router()
@@ -20,6 +23,7 @@ def get_handlers_router() -> Router:
     siting_router = get_siting_router()
     admin_router = get_admin_router()
 
+    # * add all routers at the boss router
     router.include_router(start_router)
     router.include_router(menu_router)
     router.include_router(rating_router)
