@@ -24,7 +24,7 @@ class FirstMenuSchedule:
         builder.adjust(2, 1, 1)
         return builder.as_markup()
 
-    async def process_selection_menu(self, query: CallbackQuery, callback_data: Callback) -> tuple:
+    async def process_selection_menu(self, callback_data: Callback) -> tuple:
 
         return_data = (str, None)
 

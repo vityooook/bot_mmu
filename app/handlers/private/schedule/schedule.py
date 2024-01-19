@@ -5,7 +5,7 @@ from loguru import logger
 # * import requests to university's API
 from API.request_schedule import get_day_schedule
 # * import inline rating menu keyboard
-from keyboard.inline.menu.inline_menu import InlineMenu
+from keyboard.inline.menu.inline_menu import main_menu
 # * import callback
 from handlers.callback.callback_data import (
     MenuCallback,
@@ -50,7 +50,6 @@ async def process_first_schedule(
     """
     await query.message.edit_text("мур мур...")
     selected, date_for_schedule = await FirstMenuSchedule().process_selection_menu(
-        query=query,
         callback_data=callback_data
     )
     # * get the data from the callback and perform the actions
@@ -69,7 +68,7 @@ async def process_first_schedule(
     elif selected == "BACK":
         await query.message.edit_text(
             "МЯУ бот создан для студентов.\n\n<b>Выберите нужное действие:</b>",
-            reply_markup=await InlineMenu().menu()
+            reply_markup=main_menu()
         )
 
 

@@ -61,9 +61,9 @@ async def get_day_schedule(user_id: int, date: datetime) -> str:
                         # * if subject not uniq, add only auditorium and lecturer
                         auditorium_info = f"{entry['auditorium']} - {entry['lecturer']}"
                         text.append(auditorium_info)
-                text = " \n".join(text)
+                text = "\n".join(text)
                 # * return schedule
-                return f"{json_date}\n{text}"
+                return f"{json_date}{text}"
         except JSONDecodeError as error:
             logger.exception(f"Ошибка декодирования JSON {error}")
     else:

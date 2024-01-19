@@ -5,8 +5,8 @@ from aiogram.fsm.state import State, StatesGroup
 from loguru import logger
 
 # * import inline rating menu keyboard
-from keyboard.inline.menu.inline_menu import InlineMenu
-from keyboard.inline.rating.inline_feedback import InlineFeedback
+from keyboard.inline.menu.inline_menu import main_menu
+from keyboard.inline.rating.inline_feedback import start_feedback
 # * import callback
 from handlers.callback.callback_data import (
     RatingMenuCallback, RatingFeedbackCallback, RatingLinkFeedbackCallback
@@ -61,7 +61,7 @@ async def process_selecting_teacher(msg: Message, state: FSMContext):
             # * call inline keyboard with first question
             await msg.answer(
                 f"{question[0]}",
-                reply_markup=await InlineFeedback().start_feedback()
+                reply_markup=start_feedback()
             )
         else:
             await msg.answer("вы уже оставляли отзыв")
@@ -96,7 +96,7 @@ async def link_to_feedback(
         # * call inline keyboard with first question
         await query.message.edit_text(
             f"{question[0]}",
-            reply_markup=await InlineFeedback().start_feedback()
+            reply_markup=start_feedback()
         )
     else:
         await query.message.edit_text(
@@ -120,9 +120,7 @@ async def process_feedback(
         """
     await query.message.edit_text("мур мур...")
     # * get the response from callback
-    mark_data = await InlineFeedback().process_selection(
-        callback_data=callback_data
-    )
+    mark_data = {"mark": callback_data.act, "question": callback_data.question}
     # * get the teacher id from state
     teacher_data = await state.get_data()
     # * check the question number
@@ -132,7 +130,7 @@ async def process_feedback(
         # * call the next question
         await query.message.edit_text(
             f"{question[mark_data['question']]}",
-            reply_markup=await InlineFeedback().start_feedback(
+            reply_markup=start_feedback(
                 question=mark_data["question"] + 1
             )
         )
@@ -150,5 +148,5 @@ async def process_feedback(
         await query.message.edit_text(
             "😼 спасибо, ответы записаны 😼"
             "\n\n<b>Выберите нужное действие: </b> ",
-            reply_markup=await InlineMenu().menu()
+            reply_markup=main_menu()
         )

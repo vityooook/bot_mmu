@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from loguru import logger
 
 
-from keyboard.inline.menu.inline_menu import InlineMenu
+from keyboard.inline.menu.inline_menu import main_menu
 
 
 router = Router()
@@ -24,6 +24,6 @@ async def menu(msg: Message, state: FSMContext):
     await state.clear()
     await msg.answer(
         "МЯУ бот создан для студентов.\n\n<b>Выберите нужное действие:</b>",
-        reply_markup=await InlineMenu().menu()
+        reply_markup=main_menu()
     )
 

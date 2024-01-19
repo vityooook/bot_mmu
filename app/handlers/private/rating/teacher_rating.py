@@ -5,7 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from loguru import logger
 
 # * import inline keyboard to return to ratings menu
-from keyboard.inline.rating.inline_link_back_rating import InlineLinkBackRating
+from keyboard.inline.rating.inline_link_back_rating import leavefeedback_or_back
 # * import callback
 from handlers.callback.callback_data import RatingMenuCallback
 # * import requests to database
@@ -64,9 +64,7 @@ async def process_selecting_teacher(msg: Message, state: FSMContext):
                 f"\nИзложение материала: {rating[3][1]}"
                 f"\nОрганизованность: {rating[4][1]}"
                 f"<i>\n\nМы были бы очень признательны, если вы могли бы поделиться вашим опытом обучения с преподавателем.</i>",
-                reply_markup=await InlineLinkBackRating().link_back(
-                    teacher_id=teacher_id
-                )
+                reply_markup=leavefeedback_or_back(teacher_id=teacher_id)
             )
         else:
             await msg.answer(
@@ -74,11 +72,7 @@ async def process_selecting_teacher(msg: Message, state: FSMContext):
                 f"<i>\nДисциплина: {teacher_subject}</i>"
                 f"\n\n<code>Рейтинг осутствует</code>"
                 "<i>\n\nМы были бы очень признательны, если вы могли бы поделиться вашим опытом обучения с преподавателем.</i>",
-                reply_markup=await InlineLinkBackRating().link_back(
-                    teacher_id=teacher_id
-                )
+                reply_markup=leavefeedback_or_back(teacher_id=teacher_id)
             )
     else:
-        await msg.answer(
-            "фио преподователя не верное"
-        )
+        await msg.answer("фио преподователя не верное")

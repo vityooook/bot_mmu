@@ -8,9 +8,9 @@ from loguru import logger
 # * import callback
 from handlers.callback.callback_data import MenuCallback, SitingCallback
 # * import inline rating menu keyboard
-from keyboard.inline.menu.inline_menu import InlineMenu
+from keyboard.inline.menu.inline_menu import main_menu
 # * import inline siting menu keyboard
-from keyboard.inline.siting.inline_siting import InlineSiting
+from keyboard.inline.siting.inline_siting import siting_menu
 # * import requests to database
 from database import crud
 
@@ -31,7 +31,7 @@ async def siting_menu(query: CallbackQuery):
     logger.info("Siting menu is called")
     await query.message.edit_text(
         "настроки",
-        reply_markup=await InlineSiting().siting_menu()
+        reply_markup=siting_menu()
     )
 
 
@@ -63,7 +63,7 @@ async def process_user_group(msg: Message, state: FSMContext):
         await msg.answer(
             "😼 группу поменяли 😼"
             "\n\n<b>Выберите нужное действие: </b> ",
-            reply_markup=await InlineMenu().menu()
+            reply_markup=main_menu()
         )
     else:
         await msg.answer('такой группы нету')
@@ -78,5 +78,5 @@ async def back_manu(query: CallbackQuery):
     """
     await query.message.edit_text(
         "\n\n<b>Выберите нужное действие: </b> ",
-        reply_markup=await InlineMenu().menu()
+        reply_markup=main_menu()
     )

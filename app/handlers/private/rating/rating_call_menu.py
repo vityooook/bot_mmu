@@ -8,10 +8,9 @@ from handlers.callback.callback_data import (
     RatingLinkFeedbackCallback
 )
 # * import inline rating menu keyboard
-from keyboard.inline.rating.inline_menu_rating import InlineMenuRating
+from keyboard.inline.rating.inline_menu_rating import rating_menu
 # * import inline group menu keyboard
-from keyboard.inline.menu.inline_menu import InlineMenu
-
+from keyboard.inline.menu.inline_menu import main_menu
 router = Router()
 
 
@@ -25,7 +24,7 @@ async def teacher_rating(query: CallbackQuery):
     logger.debug("Ratings menu is called up")
     await query.message.edit_text(
         text="🌟 <b>Рейтинг преподавателей</b> 🌟",
-        reply_markup=await InlineMenuRating().menu()
+        reply_markup=rating_menu()
     )
 
 
@@ -38,7 +37,7 @@ async def back_from_teacher_rating(query: CallbackQuery):
     """
     await query.message.edit_text(
         text="🌟 <b>Рейтинг преподавателей</b> 🌟",
-        reply_markup=await InlineMenuRating().menu()
+        reply_markup=rating_menu()
     )
 
 
@@ -51,5 +50,5 @@ async def back_to_main_menu(query: CallbackQuery):
     """
     await query.message.edit_text(
         "МЯУ бот создан для студентов.\n\n<b>Выберите нужное действие:</b>",
-        reply_markup=await InlineMenu().menu()
+        reply_markup=main_menu()
     )

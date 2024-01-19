@@ -3,12 +3,11 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup
 from handlers.callback.callback_data import GroupsCallback
 
 
-class InlineGroups:
-    async def groups_menu(self) -> InlineKeyboardMarkup:
-        """inline keyboard for back to main menu"""
-        builder = InlineKeyboardBuilder()
+def back_to_main_menu() -> InlineKeyboardMarkup:
+    """Inline keyboard for back to main menu"""
+    builder = InlineKeyboardBuilder()
 
-        builder.button(text="🐈‍⬛ назад", callback_data=GroupsCallback(act="BACK"))
+    builder.button(text="🐈‍⬛ назад", callback_data=GroupsCallback(act="BACK"))
 
-        builder.adjust(1)
-        return builder.as_markup()
+    builder.adjust(1)
+    return builder.as_markup()

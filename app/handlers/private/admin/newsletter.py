@@ -13,9 +13,9 @@ from config import ADMIN
 # * import callback
 from handlers.callback.callback_data import AdminWithoutPhotoCallback, AdminAcceptCallback
 # * import inline keyboard
-from keyboard.inline.admin.inline_without_photo import InlineAdmin
+from keyboard.inline.admin.inline_without_photo import without_photo
 # * import inline keyboard
-from keyboard.inline.admin.inline_accept import InlineAdminAccept
+from keyboard.inline.admin.inline_accept import accept_newsletter
 from loader import bot
 
 router = Router()
@@ -63,7 +63,7 @@ async def process_text(msg: Message, state: FSMContext):
     # * answer with inline keyboard for decline new state
     await msg.answer(
         "текст принят.\nскиньте фото",
-        reply_markup=await InlineAdmin().without_photo()
+        reply_markup=without_photo()
     )
     await state.set_state(Newsletter.photo)
 
@@ -82,7 +82,7 @@ async def process_without_photo(query: CallbackQuery, state: FSMContext):
     await query.message.answer(
         f"{data['text']}"
         f"\n\n<i>потвердите текст</i>",
-        reply_markup=await InlineAdminAccept().accept_newsletter()
+        reply_markup=accept_newsletter()
     )
 
 
@@ -101,7 +101,7 @@ async def process_photo(msg: Message, state: FSMContext):
     await msg.answer_photo(
         photo=data["photo"],
         caption=f"{data['text']}\n\n<i>потвердите текст</i>",
-        reply_markup=await InlineAdminAccept().accept_newsletter()
+        reply_markup=accept_newsletter()
     )
 
 
@@ -112,12 +112,11 @@ async def final_stage(
         callback_data: AdminAcceptCallback,
         state: FSMContext
 ):
-    """ admin must decide to start the mailing or cancel it
+    """Admin must decide to start the mailing or cancel it
 
     :param query: this object represents an incoming callback query from a callback button
     :param callback_data: the callback with some information
     :param state: inherit fsm
-    :return: the output is several coroutines
     """
     if callback_data.act == "ACCEPT":
         data = await state.get_data()
