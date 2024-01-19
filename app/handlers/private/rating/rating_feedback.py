@@ -121,7 +121,6 @@ async def process_feedback(
     await query.message.edit_text("мур мур...")
     # * get the response from callback
     mark_data = await InlineFeedback().process_selection(
-        query=query,
         callback_data=callback_data
     )
     # * get the teacher id from state

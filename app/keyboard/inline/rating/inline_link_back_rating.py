@@ -5,6 +5,8 @@ from handlers.callback.callback_data import RatingLinkFeedbackCallback
 
 class InlineLinkBackRating:
     async def link_back(self, teacher_id: int) -> InlineKeyboardMarkup:
+        """When a student sees a teacher's rating,
+        he/she can return to the main menu or leave a review."""
         builder = InlineKeyboardBuilder()
 
         builder.button(

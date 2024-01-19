@@ -19,31 +19,8 @@ class InlineFeedback:
         builder.adjust(5)
         return builder.as_markup()
 
-    async def process_selection(self, query: CallbackQuery, callback_data: Callback) -> dict:
+    async def process_selection(self, callback_data: Callback) -> dict:
         """Catches callbacks and extracts marks and question number from them"""
-        return_data = {
-            "mark": int,
-            "question": int
-        }
-
-        if callback_data.act == 1:
-            return_data["mark"] = callback_data.act
-            return_data["question"] = callback_data.question
-
-        elif callback_data.act == 2:
-            return_data["mark"] = callback_data.act
-            return_data["question"] = callback_data.question
-
-        elif callback_data.act == 3:
-            return_data["mark"] = callback_data.act
-            return_data["question"] = callback_data.question
-
-        elif callback_data.act == 4:
-            return_data["mark"] = callback_data.act
-            return_data["question"] = callback_data.question
-
-        elif callback_data.act == 5:
-            return_data["mark"] = callback_data.act
-            return_data["question"] = callback_data.question
+        return_data = {"mark": callback_data.act, "question": callback_data.question}
 
         return return_data

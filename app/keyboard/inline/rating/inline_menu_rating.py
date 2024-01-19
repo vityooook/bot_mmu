@@ -5,6 +5,7 @@ from handlers.callback.callback_data import RatingMenuCallback
 
 class InlineMenuRating:
     async def menu(self) -> InlineKeyboardMarkup:
+        """Siting menu with three buttons (see rating, leave feedback, back)"""
         builder = InlineKeyboardBuilder()
 
         builder.button(text="👀 рейтинг",
