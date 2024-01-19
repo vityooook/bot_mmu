@@ -67,7 +67,8 @@ async def process_first_schedule(
 
     elif selected == "BACK":
         await query.message.edit_text(
-            "МЯУ бот создан для студентов.\n\n<b>Выберите нужное действие:</b>",
+            "Мяу-мяу-мяу😻"
+            "\n\n<b>Выберите нужное действие:</b>",
             reply_markup=main_menu()
         )
 
@@ -118,6 +119,7 @@ async def process_second_schedule(
         )
     else:
         await query.message.edit_text(
-            text="<b>меню расписания:</b>",
+            "Мяу-мяу-мяу😻"
+            "\n\n<b>меню расписания:</b>",
             reply_markup=await FirstMenuSchedule().menu()
         )

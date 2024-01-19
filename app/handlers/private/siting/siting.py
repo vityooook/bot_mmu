@@ -23,14 +23,14 @@ class UserChangeInfo(StatesGroup):
 
 @logger.catch()
 @router.callback_query(MenuCallback.filter(F.act == "SITING"))
-async def siting_menu(query: CallbackQuery):
+async def siting(query: CallbackQuery):
     """Working out a callback for a call siting menu
 
     :param query: this object represents an incoming callback query from a callback button
     """
     logger.info("Siting menu is called")
     await query.message.edit_text(
-        "настроки",
+        "🪦настроки🪦",
         reply_markup=siting_menu()
     )
 
@@ -44,7 +44,7 @@ async def changing_group(query: CallbackQuery, state: FSMContext):
     :param state: inherit fsm
     """
     await state.set_state(UserChangeInfo.user_group)
-    await query.message.edit_text("Напищи название твоей группы (пример: ЭКН11-1)")
+    await query.message.edit_text("Напищи мне название своей группы (например: ЛПП141-1)")
 
 
 @logger.catch()
@@ -66,7 +66,10 @@ async def process_user_group(msg: Message, state: FSMContext):
             reply_markup=main_menu()
         )
     else:
-        await msg.answer('такой группы нету')
+        await msg.answer(
+            "Фырк, такой группы не найдено🙀"
+            "\n<i>Возможно, ты просто ошибся в названии группы. Напиши заново, пожалуйста.</i>"
+        )
 
 
 @logger.catch()
@@ -77,6 +80,7 @@ async def back_manu(query: CallbackQuery):
     :param query: this object represents an incoming callback query from a callback button
     """
     await query.message.edit_text(
-        "\n\n<b>Выберите нужное действие: </b> ",
+        "Мяу-мяу-мяу😻"
+        "\n\n<b>Выберите нужное действие: </b>",
         reply_markup=main_menu()
     )

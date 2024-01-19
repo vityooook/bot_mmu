@@ -9,9 +9,9 @@ def siting_menu() -> InlineKeyboardMarkup:
     """
     builder = InlineKeyboardBuilder()
 
-    builder.button(text="сменить группу", callback_data=SitingCallback(act="CHANGE-GROUP"))
+    builder.button(text="🐾 сменить группу", callback_data=SitingCallback(act="CHANGE-GROUP"))
 
-    builder.button(text="назад", callback_data=SitingCallback(act="BACK"))
+    builder.button(text="🐈‍⬛ назад", callback_data=SitingCallback(act="BACK"))
 
     builder.adjust(1, 1)
     return builder.as_markup()

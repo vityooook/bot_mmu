@@ -38,6 +38,7 @@ async def back_menu(query: CallbackQuery):
     :return: the output is several coroutines
     """
     await query.message.edit_text(
-        "МЯУ бот создан для студентов.\n\n<b>Выберите нужное действие:</b>",
+        "Мяу-мяу-мяу😻"
+        "\n\n<b>Выберите нужное действие:</b>",
         reply_markup=main_menu()
     )

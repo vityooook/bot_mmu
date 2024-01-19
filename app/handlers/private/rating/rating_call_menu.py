@@ -23,7 +23,7 @@ async def teacher_rating(query: CallbackQuery):
     """
     logger.debug("Ratings menu is called up")
     await query.message.edit_text(
-        text="🌟 <b>Рейтинг преподавателей</b> 🌟",
+        "🌟 <b>Рейтинг преподавателей</b> 🌟",
         reply_markup=rating_menu()
     )
 
@@ -36,7 +36,7 @@ async def back_from_teacher_rating(query: CallbackQuery):
     :param query: this object represents an incoming callback query from a callback button
     """
     await query.message.edit_text(
-        text="🌟 <b>Рейтинг преподавателей</b> 🌟",
+        "🌟 <b>Рейтинг преподавателей</b> 🌟",
         reply_markup=rating_menu()
     )
 
@@ -49,6 +49,7 @@ async def back_to_main_menu(query: CallbackQuery):
     :param query: this object represents an incoming callback query from a callback button
     """
     await query.message.edit_text(
-        "МЯУ бот создан для студентов.\n\n<b>Выберите нужное действие:</b>",
+        "Мяу-мяу-мяу😻"
+        "\n\n<b>меню расписания:</b>",
         reply_markup=main_menu()
     )

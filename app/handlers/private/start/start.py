@@ -29,24 +29,24 @@ async def cmd_start_handler(msg: Message, state: FSMContext):
     logger.info("command /start")
     if await crud.user.verify_id(msg.from_user.id):
         await msg.answer(
-            f"Приветик,{msg.from_user.first_name}, давно не виделись",
+            f"Мрррр, {msg.from_user.first_name}, МЯУ скучал по тебе😽",
             reply_markup=menu_reply()
         )
     else:
         await msg.answer(
-            "Приветик, это бот от университета МЯУ, который может скинуть расписание!"
+            "Приветик! 😺 Это бот от кота МЯУ!"
+            "🎓Он умеет скидывать расписание, а еще мурлыкает с удовольствием! 🐾"
+            "\n<b>Напищи мне название своей группы (например: ЛПП141-1)</b>"
         )
         await state.set_state(UserInfo.user_group)
-        await msg.answer("Напищи название твоей группы (пример: ЭКН11-1)")
 
 
 @logger.catch()
 @router.message(UserInfo.user_group)
-async def process_user_group(msg: Message, state: FSMContext):
+async def process_user_group(msg: Message):
     """Handling the state when the student entered group name
 
     :param msg: message sent by the user
-    :param state: inherit fsm
     """
     # * check if the group exist
     if await crud.group.verify_group(msg.text.upper()):
@@ -61,8 +61,14 @@ async def process_user_group(msg: Message, state: FSMContext):
             info.last_name,
             info.username
         )
-        await msg.answer("спасибо, все супер\nтеперь ты можешь получить расписание",
-                         reply_markup=menu_reply())
+        await msg.answer(
+            "Все супер! 🐾 Теперь ты можешь получить расписание"
+            "\n\n<b>Выберите нужное действие:</b>",
+            reply_markup=menu_reply()
+        )
     else:
-        await msg.answer('такой группы нету')
+        await msg.answer(
+            "Фырк, такой группы не найдено🙀"
+            "\n<i>Возможно, ты просто ошибся в названии группы. Напиши заново, пожалуйста.</i>"
+        )
 

@@ -23,7 +23,8 @@ async def menu(msg: Message, state: FSMContext):
     # * cleaning all states just in case
     await state.clear()
     await msg.answer(
-        "МЯУ бот создан для студентов.\n\n<b>Выберите нужное действие:</b>",
+        "Мяу-мяу-мяу😻"
+        "\n\n<b>Выберите нужное действие:</b>",
         reply_markup=main_menu()
     )
 
