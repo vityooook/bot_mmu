@@ -1,1 +1,1 @@
-from app.services.default_commands import set_default_commands
+from services.default_commands import set_default_commands

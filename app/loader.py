@@ -11,7 +11,7 @@ logger.add(
     "logs/logs.log",
     format="{time} {level} {message}",
     level="INFO",
-    rotation="1 day",
+    rotation="1 week",
     compression="zip",
     enqueue=True,
     backtrace=False,

@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from app.loader import bot
+from loader import bot
 
 
 async def set_default_commands(dp: Dispatcher):
