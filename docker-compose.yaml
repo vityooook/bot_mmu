@@ -11,23 +11,24 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     ports:
       - "5443:5443"
-#  pgadmin:
-#    container_name: pgAdmin
-#    image: dpage/pgadmin4
-#    environment:
-#      - PGADMIN_DEFAULT_EMAIL=vityooook@gmail.com
-#      - PGADMIN_DEFAULT_PASSWORD=v15122003
-#    ports:
-#      - "5050:80"
-#    depends_on:
-#      - postgres
+  pgadmin:
+    container_name: pgAdmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
   bot:
     build: .
     container_name: Bot
-    command: sh -c "python -m main_tg"
+    command: sh -c "python app"
     environment:
       BOT_TOKEN: ${BOT_TOKEN}
       PG_URL: ${PG_URL}
@@ -38,3 +39,4 @@ services:
 
 volumes:
   pgdata:
+  pgadmin:
