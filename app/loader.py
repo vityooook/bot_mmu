@@ -1,4 +1,3 @@
-import sys
 from loguru import logger
 
 from aiogram import Bot, Dispatcher
@@ -7,9 +6,17 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 import config
 
-logger.add("log_{time}.log", rotation="1 week", compression="zip")
-logger.add(sys.stderr, format="{time} {level} {message}", level="INFO")
-
+# * Set up logging, declare the bot and dispatcher
+logger.add(
+    "logs/logs.log",
+    format="{time} {level} {message}",
+    level="INFO",
+    rotation="1 week",
+    compression="zip",
+    enqueue=True,
+    backtrace=False,
+    diagnose=False
+)
 
 storage = MemoryStorage()
 bot = Bot(token=config.BOT_TOKEN, parse_mode=ParseMode.HTML)
