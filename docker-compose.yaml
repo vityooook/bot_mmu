@@ -13,6 +13,9 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5443:5443"
+    network_mode: host
+
+
   pgadmin:
     container_name: pgAdmin
     image: dpage/pgadmin4
@@ -25,6 +28,7 @@ services:
       - "5050:80"
     depends_on:
       - db
+
   bot:
     build: .
     container_name: Bot
@@ -33,8 +37,12 @@ services:
       BOT_TOKEN: ${BOT_TOKEN}
       PG_URL: ${PG_URL}
     restart: always
+    ports:
+      - "8080:8080"
     depends_on:
       - db
+    network_mode: host
+
 
 
 volumes:
