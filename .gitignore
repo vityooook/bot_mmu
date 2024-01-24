@@ -157,6 +157,5 @@ cython_debug/
 .ruff_cache
 eggs
 logs
-dump.sql
 schedule.db
 .DS_Store
