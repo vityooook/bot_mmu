@@ -30,7 +30,8 @@ async def siting(query: CallbackQuery):
     """
     logger.info("Siting menu is called")
     await query.message.edit_text(
-        "🪦настроки 🪦",
+        "🪦 <b>настроки</b> 🪦\n\n"
+        "<i>Если у вас возникли какие-либо проблемы, вопросы или у вас есть предложения, не стесняйтесь писать сюда:</i> @manager_miu",
         reply_markup=siting_menu()
     )
 
