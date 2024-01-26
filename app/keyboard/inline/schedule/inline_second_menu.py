@@ -6,7 +6,6 @@ from handlers.callback.callback_data import ScheduleSecondMenuCallback as Callba
 
 
 class SecondMenuSchedule:
-
     async def menu(self, date) -> InlineKeyboardMarkup:
         builder = InlineKeyboardBuilder()
 
@@ -20,7 +19,7 @@ class SecondMenuSchedule:
         builder.adjust(3)
         return builder.as_markup()
 
-    async def process_selection_menu(self, query: CallbackQuery, callback_data: Callback) -> tuple:
+    async def process_selection_menu(self, callback_data: Callback) -> tuple:
         return_data = False, None
         date = callback_data.date
 

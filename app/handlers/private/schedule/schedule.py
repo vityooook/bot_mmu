@@ -3,7 +3,7 @@ from aiogram.types import CallbackQuery
 from loguru import logger
 
 # * import requests to university's API
-from API.request_schedule import get_day_schedule
+from API.request_schedule import get_day_schedule, get_week_schedule
 # * import inline rating menu keyboard
 from keyboard.inline.menu.inline_menu import main_menu
 # * import callback
@@ -11,7 +11,8 @@ from handlers.callback.callback_data import (
     MenuCallback,
     ScheduleCalendarCallback,
     ScheduleFirstMenuCallback,
-    ScheduleSecondMenuCallback
+    ScheduleSecondMenuCallback,
+    ScheduleWeekMenuCallback
 )
 # * import inline schedule menu keyboard
 from keyboard.inline.schedule.inline_first_menu import FirstMenuSchedule
@@ -19,6 +20,8 @@ from keyboard.inline.schedule.inline_first_menu import FirstMenuSchedule
 from keyboard.inline.schedule.inline_second_menu import SecondMenuSchedule
 # * import inline keyboard where u can chose date from calendar
 from keyboard.inline.schedule.inline_calendar import Calendar
+# * import inline keyboard with additional functionality
+from keyboard.inline.schedule.inline_week_menu import WeekMenu
 
 router = Router()
 
@@ -58,6 +61,13 @@ async def process_first_schedule(
         await query.message.edit_text(
             data,
             reply_markup=await SecondMenuSchedule().menu(date=date_for_schedule)
+        )
+
+    elif selected == "WEEK":
+        data = await get_week_schedule(user_id=query.from_user.id, date=date_for_schedule)
+        await query.message.edit_text(
+            data,
+            reply_markup=await WeekMenu().menu(date=date_for_schedule)
         )
     elif selected == "CALENDAR":
         await query.message.edit_text(
@@ -108,7 +118,6 @@ async def process_second_schedule(
     """
     await query.message.edit_text("мур мур...")
     selected, date_for_schedule = await SecondMenuSchedule().process_selection_menu(
-        query=query,
         callback_data=callback_data
     )
     if selected:
@@ -116,6 +125,36 @@ async def process_second_schedule(
         await query.message.edit_text(
             data,
             reply_markup=await SecondMenuSchedule().menu(date=date_for_schedule)
+        )
+    else:
+        await query.message.edit_text(
+            "Мяу-мяу-мяу😻"
+            "\n\n<b>меню расписания:</b>",
+            reply_markup=await FirstMenuSchedule().menu()
+        )
+
+
+@logger.catch()
+@router.callback_query(ScheduleWeekMenuCallback.filter())
+async def process_week_schedule(
+        query: CallbackQuery,
+        callback_data: ScheduleWeekMenuCallback
+):
+    """The user has already received the schedule for the week and
+    can return to the main menu or view the schedule for the next week or the previous week
+
+    :param query: this object represents an incoming callback query from a callback button
+    :param callback_data: the callback with some information
+    """
+    await query.message.edit_text("мур мур...")
+    selected, date_for_schedule = await WeekMenu().process_selection_menu(
+        callback_data=callback_data
+    )
+    if selected:
+        data = await get_week_schedule(user_id=query.from_user.id, date=date_for_schedule)
+        await query.message.edit_text(
+            data,
+            reply_markup=await WeekMenu().menu(date=date_for_schedule)
         )
     else:
         await query.message.edit_text(

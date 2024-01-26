@@ -22,7 +22,12 @@ class ScheduleFirstMenuCallback(CallbackData, prefix="schedule_first"):
 
 class ScheduleSecondMenuCallback(CallbackData, prefix="schedule_second"):
     act: str
-    date: datetime.date | None=None
+    date: datetime.date | None = None
+
+
+class ScheduleWeekMenuCallback(CallbackData, prefix="schedule_week_menu"):
+    act: str
+    date: datetime.date | None = None
 
 
 class RatingMenuCallback(CallbackData, prefix="rating_menu"):
