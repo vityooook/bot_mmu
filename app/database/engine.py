@@ -13,9 +13,9 @@ Base = declarative_base()
 # * testing requests to database
 if __name__ == "__main__":
     import asyncio
-    from database.crud.group import verify_group
+    from database.crud.user import add_user_info
 
     async def smth():
-        await verify_group('sds')
+        await add_user_info(121331, 211, 'lox', None, 'bold')
 
     asyncio.run(smth())

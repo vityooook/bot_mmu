@@ -43,13 +43,15 @@ async def cmd_start_handler(msg: Message, state: FSMContext):
 
 @logger.catch()
 @router.message(UserInfo.user_group)
-async def process_user_group(msg: Message):
+async def process_user_group(msg: Message, state: FSMContext):
     """Handling the state when the student entered group name
 
+    :param state: inherit fsm
     :param msg: message sent by the user
     """
     # * check if the group exist
     if await crud.group.verify_group(msg.text.upper()):
+        await state.clear()
         # * with the same request we get the group id
         group_id = await crud.group.verify_group(msg.text.upper())
         info = msg.from_user
