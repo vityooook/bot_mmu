@@ -24,7 +24,7 @@ async def group_menu(query: CallbackQuery):
     logger.debug("group menu is called")
     await query.message.edit_text(
         "Ссылки на разные группы МЯУ"
-        "\n\n<a href='https://t.me/+rFSRBaxmn6NlNjAy'>главная группа МЯУ</a>",
+        "\n\n<a href='https://t.me/+bcMH3GF86mY3MjQy'>главная группа МЯУ</a>",
         reply_markup=back_to_main_menu()
     )
 
