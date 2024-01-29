@@ -13,7 +13,7 @@ class User(Base):
     group_id: Mapped[int] = mapped_column(ForeignKey("groups.group_id"))
     first_name: Mapped[str] = mapped_column(nullable=True)
     last_name: Mapped[str] = mapped_column(nullable=True)
-    username: Mapped[str] = mapped_column(nullable=False)
+    username: Mapped[str] = mapped_column(nullable=True)
 
 
 class Group(Base):
