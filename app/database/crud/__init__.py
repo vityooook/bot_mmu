@@ -1,1 +1,1 @@
-from database.crud import group, rating, user
+from database.crud import group, rating, user, teacher

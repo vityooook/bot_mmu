@@ -102,7 +102,7 @@ async def get_week_schedule(user_id: int, date: datetime):
                 text = "На этой неделе пар нету! кайфуем 😸"
                 return text
             else:
-                # * a tuple with uniq elements
+                # * a set with uniq elements
                 unique_days = set()
                 unique_combinations = set()
                 text = []
@@ -147,3 +147,56 @@ def data_changing(date: datetime):
     date_monday_unclean = date - datetime.timedelta(date_week)
     date_sunday_unclean = date_monday_unclean + datetime.timedelta(days=6)
     return date_monday_unclean, date_sunday_unclean
+
+
+@logger.catch()
+async def get_teachers_name(user_id: int) -> str:
+    """Make a request to the university's API to get teachers name
+
+    :param user_id: The student's user id of Telegram.
+    :return: text with teachers name
+    """
+    logger.debug("we get student teachers")
+    # * get user's group id
+    group_id = await user.get_user_group_id(user_id)
+
+    first_date, second_date = date()
+
+    # * make a request to the university's API
+    response = requests.get(
+        f"https://mmu2021:mmu2021@schedule.mi.university/api/schedule/group/"
+        f"{group_id}?start={first_date}&finish={second_date}&lng=1"
+    )
+    # * checking connection to the API
+    if response.status_code == 200:
+        # * conversion from requests format to json
+        data = response.json()
+        # * a set with uniq elements
+        uniq_name = set()
+
+        for entry in data:
+            uniq_name.add(entry["lecturer_title"])
+        text = ""
+        for i in uniq_name:
+            text += f"\n{i}"
+        return text
+    else:
+        logger.error(f"Ошибка: {response.status_code}")
+
+
+def date():
+    if datetime.date.today() < datetime.date(year=datetime.date.today().year, month=8, day=1):
+        first_date = datetime.date(year=datetime.date.today().year, month=2, day=1)
+        second_date = datetime.date(year=datetime.date.today().year, month=4, day=1)
+
+        first_date_clean = datetime.date.strftime(first_date, "%Y.%m.%d")
+        second_date_clean = datetime.date.strftime(second_date, "%Y.%m.%d")
+        return first_date_clean, second_date_clean
+    else:
+        first_date = datetime.date(year=datetime.date.today().year, month=9, day=1)
+        second_date = datetime.date(year=datetime.date.today().year, month=11, day=1)
+
+        first_date_clean = datetime.date.strftime(first_date, "%Y.%m.%d")
+        second_date_clean = datetime.date.strftime(second_date, "%Y.%m.%d")
+        return first_date_clean, second_date_clean
+

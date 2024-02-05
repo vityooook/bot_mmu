@@ -13,9 +13,15 @@ Base = declarative_base()
 # * testing requests to database
 if __name__ == "__main__":
     import asyncio
-    from database.crud.user import add_user_info
+    from database.crud.teacher import get_teachers_name
 
     async def smth():
-        await add_user_info(121331, 211, 'lox', None, 'bold')
-
+        list_of_teachers = await get_teachers_name()
+        text = ""
+        number = 1
+        for name in list_of_teachers:
+            text += f"{number}. {name[0]}\n"
+            number += 1
+        text += "<i>\n\nИспользуй функцию поиска в чате для быстрого нахождения имени</i>"
+        print(text)
     asyncio.run(smth())
