@@ -57,12 +57,11 @@ async def process_selecting_teacher(msg: Message, state: FSMContext):
             await msg.answer(
                 f"<b>{teacher_name}</b>" 
                 f"<i>\nДисциплина: {teacher_subject}</i>"
-                f"\n\n<b>Средний балл:</b> {rating_avg}"
-                f"\n\nЧувство юмора: {rating[0][1]}"
-                f"\nОбъективность: {rating[1][1]}"
-                f"\nТребовательность: {rating[2][1]}"
-                f"\nИзложение материала: {rating[3][1]}"
-                f"\nОрганизованность: {rating[4][1]}"
+                f"\n\n<b>Общая оценка:</b> {rating_avg}"
+                f"\n\nЗнания: {rating[0][1]}"
+                f"\nУмение преподавать: {rating[1][1]}"
+                f"\nВ общении: {rating[2][1]}"
+                f"\n«Халявность»: {rating[3][1]}"
                 f"<i>\n\nМы были бы очень признательны, если вы могли бы поделиться вашим опытом обучения с преподавателем.</i>",
                 reply_markup=leavefeedback_or_back(teacher_id=teacher_id)
             )

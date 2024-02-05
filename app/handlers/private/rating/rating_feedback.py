@@ -131,7 +131,7 @@ async def process_feedback(
     # * get the teacher id from state
     teacher_data = await state.get_data()
     # * check the question number
-    if mark_data["question"] != 5:
+    if mark_data["question"] != 4:
         # * add answer to list
         marks.append(mark_data)
         # * call the next question
