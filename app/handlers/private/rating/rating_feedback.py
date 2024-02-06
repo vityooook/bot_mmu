@@ -145,6 +145,7 @@ async def process_feedback(
         # * add last answer to list
         marks.append(mark_data)
         # * add all answer to the database
+        logger.debug(marks)
         await crud.rating.add_rating(
             teacher_id=teacher_data["id"],
             user_id=query.from_user.id,

@@ -18,7 +18,7 @@ router = Router()
 async def student_teachers(query: CallbackQuery):
     name = await get_teachers_name(query.from_user.id)
     await query.message.edit_text(
-        "Вот список преподавателей на текущий триместр:\n"
+        "Вот список преподавателей на текущий семестр:\n"
         f"{name}"
         "<i>\n\nМяу, возможны некоторые несоответствия, так как я не знаю твою группу по английскому.</i>",
         reply_markup=back()

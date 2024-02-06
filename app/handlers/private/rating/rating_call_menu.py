@@ -31,19 +31,6 @@ async def teacher_rating(query: CallbackQuery):
     )
 
 
-# @logger.catch()
-# @router.callback_query(RatingLinkFeedbackCallback.filter(F.act == "BACK"))
-# async def back_from_teacher_rating(query: CallbackQuery):
-#     """Working out a callback for back to rating menu
-#
-#     :param query: this object represents an incoming callback query from a callback button
-#     """
-#     await query.message.edit_text(
-#         "🌟 <b>Рейтинг преподавателей</b> 🌟",
-#         reply_markup=rating_menu()
-#     )
-
-
 @logger.catch()
 @router.callback_query(RatingMenuCallback.filter(F.act == "BACK"))
 async def back_to_main_menu(query: CallbackQuery):
