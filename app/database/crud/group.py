@@ -34,3 +34,4 @@ async def update_group(user_id: int, group_id: int):
         stmt = update(User).values(group_id=group_id).where(User.user_id == user_id)
         logger.debug(stmt)
         await s.execute(stmt)
+        await s.commit()
